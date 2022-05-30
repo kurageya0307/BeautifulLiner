@@ -44,18 +44,18 @@ def makeCubicBezierCurve(d_str):
 #end def
 
 def createCubicBezierCurveSetDict(file_name):
-    cubic_bezier_curve_set_group = {}
+    cubic_bezier_curve_set_dict = {}
     
     svg = SvgData(file_name)
     for group_paths_set in svg.get_group_paths_tuple():
         group = group_paths_set[0]
         paths = group_paths_set[1]
         group_id = group.getAttributeNode('id').nodeValue
-        cubic_bezier_curve_set_group[group_id] = CubicBezierCurveSet()
+        cubic_bezier_curve_set_dict[group_id] = CubicBezierCurveSet()
         for path in paths:
-            cubic_bezier_curve_set_group[group_id].append( makeCubicBezierCurve(path.getAttributeNode('d').nodeValue) )
+            cubic_bezier_curve_set_dict[group_id].append( makeCubicBezierCurve(path.getAttributeNode('d').nodeValue) )
         #end for path
     #end for group_paths_set
 
-    return cubic_bezier_curve_set_group
+    return cubic_bezier_curve_set_dict
 #end def
