@@ -1,5 +1,6 @@
 
 from point import Point
+from linear_approximate_curve import LinearApproximateCurve
 
 #                                                                                                                   
 #                                                                                                                   
@@ -44,7 +45,7 @@ class LinearApproximateCurveSet:
     #end
 
     def append(self, curve):
-        if not type(p) is LinearApproximateCurve:
+        if not type(curve) is LinearApproximateCurve:
             raise ValueError("appending curve must be LinearApproximateCurve")
 
         self.__curves.append(curve)
