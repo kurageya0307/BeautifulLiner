@@ -12,6 +12,8 @@ from cubic_bezier_curve_set import CubicBezierCurveSet
 import pprint as pp
 import re
 
+# IN  nodeValue of d in path of svg as string
+# OUT CubicBezierCurve
 def makeCubicBezierCurve(d_str):
     cubic_bezier_curve = CubicBezierCurve()
 
@@ -20,10 +22,9 @@ def makeCubicBezierCurve(d_str):
 
     # exception handling for 1st point
     items = re.split( "\s+", point_strs[0] )
-
     last_point = Point( float(items[0]), float(items[1]) )
-
     point_strs.pop(0)
+
     for point_str in point_strs:
         items = re.split( "\s+", point_str )
         if len(items)==2:
@@ -43,6 +44,9 @@ def makeCubicBezierCurve(d_str):
     return cubic_bezier_curve
 #end def
 
+# IN  file_name as string
+# OUT {"group_id": CubicBezierCurveSet, "group_id":CubicBezierCurveSet, ...} as dict
+#      group_id is name of layer in Vectornator or Inkscape
 def createCubicBezierCurveSetDict(file_name):
     cubic_bezier_curve_set_dict = {}
     
