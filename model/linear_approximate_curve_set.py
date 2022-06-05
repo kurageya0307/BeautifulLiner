@@ -55,5 +55,27 @@ class LinearApproximateCurveSet:
     def curves(self):
         return self.__curves
     #end
+
+    def to_svg_g_str(self, group_id):
+        s = ""
+        s += "<g id=\"{}\">\n".format(group_id)
+        for curve in self.__curves:
+            s += "<path fill=\"none\" stroke-width=\"1.0\" stroke=\"#000000\" d=\""
+            is_first = True
+            for point in curve.points:
+                if is_first:
+                    s += "M {:.3f} {:.3f} ".format(point.x, point.y)
+                    is_first = False
+                else:
+                    s += "L {:.3f} {:.3f} ".format(point.x, point.y)
+                #end if
+            #end for
+            s += "\"/>\n"
+        #end for
+        s += "</g>"
+        return s
+    #end
 #end
+
+
 

@@ -20,17 +20,33 @@ def makeCubicBezierCurve(d_str):
     point_strs = re.split("[C|L|M|Z]", d_str)
     point_strs.pop(0)
 
+
     # exception handling for 1st point
-    items = re.split( "\s+", point_strs[0] )
+    items = re.split( "\s+", point_strs[0].strip() )
     last_point = Point( float(items[0]), float(items[1]) )
     point_strs.pop(0)
 
     for point_str in point_strs:
-        items = re.split( "\s+", point_str )
+        items = re.split( "\s+", point_str.strip() )
         if len(items)==2:
             p3 = Point( float(items[0]), float(items[1]) )
-            p1 = Point( (last_point.x + p3.x)/2.0, (last_point.y + p3.y)/2.0 )
-            p2 = Point( (last_point.x + p3.x)/2.0, (last_point.y + p3.y)/2.0 )
+            x1, y1, x2, y2 = 0.0, 0.0, 0.0, 0.0
+            if (last_point.x < p3.x):
+                x1 = (last_point.x*2.0 + p3.x*1.0)/3.0
+                x2 = (last_point.x*1.0 + p3.x*2.0)/3.0
+            else:
+                x1 = (last_point.x*1.0 + p3.x*2.0)/3.0
+                x2 = (last_point.x*2.0 + p3.x*1.0)/3.0
+            #end if
+            if (last_point.y < p3.y):
+                y1 = (last_point.y*2.0 + p3.y*1.0)/3.0
+                y2 = (last_point.y*1.0 + p3.y*2.0)/3.0
+            else:
+                y1 = (last_point.y*1.0 + p3.y*2.0)/3.0
+                y2 = (last_point.y*2.0 + p3.y*1.0)/3.0
+            #end if
+            p1 = Point(x1, y1)
+            p2 = Point(x2, y2)
         elif len(items)==6:
             p1 = Point( float(items[0]), float(items[1]) )
             p2 = Point( float(items[2]), float(items[3]) )

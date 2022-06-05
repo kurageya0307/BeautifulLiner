@@ -72,6 +72,26 @@ class CubicBezierControlPoint:
         self.__p3 = Point(p3.x, p3.y)
     #end
 
+    @property
+    def p0(self):
+        return self.__p0
+    #end def
+
+    @property
+    def p1(self):
+        return self.__p1
+    #end def
+
+    @property
+    def p2(self):
+        return self.__p2
+    #end def
+
+    @property
+    def p3(self):
+        return self.__p3
+    #end def
+
     def to_s(self):
         s = ""
         s += self.__p0.to_s() + "\n"
