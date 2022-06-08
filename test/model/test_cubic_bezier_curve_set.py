@@ -11,7 +11,7 @@ from cubic_bezier_curve_set import CubicBezierCurveSet
 import unittest
 
 class TestCubicBezierCurveSet(unittest.TestCase):
-    def setUp(self):
+    def test_init_and_append(self):
         p0 = Point(0.0, 0.0)
         p1 = Point(1.0, 2.0)
         p2 = Point(10.0, 20.0)
@@ -22,37 +22,57 @@ class TestCubicBezierCurveSet(unittest.TestCase):
 
         curve = CubicBezierCurve()
         curve.append(ctl_p0123)
-        curve.append(ctl_p1230)
+        curve.append(ctl_p0123)
+        #curve.append(ctl_p1230)
+        l = [curve, curve]
+
 
         self.curve_set = CubicBezierCurveSet()
-        self.curve_set.append(curve)
-        self.curve_set.append(curve)
-    #end
+        self.curve_set.append("a", l)
+        self.curve_set.append("b", l)
 
-    def test_init_and_append(self):
-        curves = self.curve_set.curves
-        ctl_points = curves[0].control_points
-        s = ""
-        s += "0.000,0.000\n"
-        s += "1.000,2.000\n"
-        s += "10.000,20.000\n"
-        s += "100.000,200.000\n"
-        self.assertEqual(ctl_points[0].to_s(),s)
+        the_answer_group_id = ("a", "b")
+        the_answer_point = (    (0.0, 0.0),
+                                (1.0, 2.0),
+                                (10.0, 20.0),
+                                (100.0, 200.0) )
 
-        s = ""
-        s += "1.000,2.000\n"
-        s += "10.000,20.000\n"
-        s += "100.000,200.000\n"
-        s += "0.000,0.000\n"
-        self.assertEqual(ctl_points[1].to_s(),s)
-    #end
+
+        i:int = 0
+        for group_id, curves in self.curve_set:
+            self.assertEqual(group_id, the_answer_group_id[i])
+
+            for curve in curves:
+                j:int = 0
+                for j, ctrl_point in enumerate(curve.control_points):
+                    if j==0:
+                        self.assertEqual(ctrl_point.p0.x, the_answer_point[j][0])
+                        self.assertEqual(ctrl_point.p0.y, the_answer_point[j][1])
+                    elif j==1:
+                        self.assertEqual(ctrl_point.p1.x, the_answer_point[j][0])
+                        self.assertEqual(ctrl_point.p1.y, the_answer_point[j][1])
+                    elif j==2:
+                        self.assertEqual(ctrl_point.p2.x, the_answer_point[j][0])
+                        self.assertEqual(ctrl_point.p2.y, the_answer_point[j][1])
+                    elif j==3:
+                        self.assertEqual(ctrl_point.p3.x, the_answer_point[j][0])
+                        self.assertEqual(ctrl_point.p3.y, the_answer_point[j][1])
+                    j += 1
+                #end for
+            #end for
+            i += 1
+        #end for
 
     def test_raise_error_appending_as_int(self):
         raise_error_curve_set = CubicBezierCurveSet()
         with self.assertRaises(ValueError) as e:
-            raise_error_curve_set.append(1)
+            raise_error_curve_set.append("a", 1)
         #end with
-        self.assertEqual(e.exception.args[0], 'appending curve must be CubicBezierCurve')
+        self.assertEqual(e.exception.args[0], 'appending curves must be list')
+        with self.assertRaises(ValueError) as e:
+            raise_error_curve_set.append(1, [1, 2])
+        #end with
+        self.assertEqual(e.exception.args[0], 'appending group_id must be str')
     #end
 #end
 
