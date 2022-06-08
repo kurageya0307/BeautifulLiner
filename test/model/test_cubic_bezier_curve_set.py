@@ -57,7 +57,7 @@ class TestCubicBezierCurveSet(unittest.TestCase):
                     elif j==3:
                         self.assertEqual(ctrl_point.p3.x, the_answer_point[j][0])
                         self.assertEqual(ctrl_point.p3.y, the_answer_point[j][1])
-                    j += 1
+                    #end if
                 #end for
             #end for
             i += 1

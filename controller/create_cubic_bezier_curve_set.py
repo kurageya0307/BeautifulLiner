@@ -60,22 +60,27 @@ def makeCubicBezierCurve(d_str):
     return cubic_bezier_curve
 #end def
 
+def makeCubicBezierCurves(paths):
+    return_list = []
+    for path in paths:
+        return_list.append(  makeCubicBezierCurve( path.getAttributeNode('d').nodeValue )  )
+    #end for
+    return return_list
+#end
+
 # IN  file_name as string
 # OUT {"group_id": CubicBezierCurveSet, "group_id":CubicBezierCurveSet, ...} as dict
 #      group_id is name of layer in Vectornator or Inkscape
-def createCubicBezierCurveSetDict(file_name):
-    cubic_bezier_curve_set_dict = {}
+def createCubicBezierCurveSet(file_name):
+    cubic_bezier_curve_set = CubicBezierCurveSet()
     
     svg = SvgData(file_name)
     for group_paths_set in svg.get_group_paths_tuple():
         group = group_paths_set[0]
         paths = group_paths_set[1]
         group_id = group.getAttributeNode('id').nodeValue
-        cubic_bezier_curve_set_dict[group_id] = CubicBezierCurveSet()
-        for path in paths:
-            cubic_bezier_curve_set_dict[group_id].append( makeCubicBezierCurve(path.getAttributeNode('d').nodeValue) )
-        #end for path
+        cubic_bezier_curve_set.append(group_id, makeCubicBezierCurves(paths) )
     #end for group_paths_set
 
-    return cubic_bezier_curve_set_dict
+    return cubic_bezier_curve_set
 #end def
