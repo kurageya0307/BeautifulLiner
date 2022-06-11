@@ -86,7 +86,7 @@ class LinearApproximateCurveSet:
         s = ""
         for group_id, curves in zip(self.__group_ids, self.__layered_curves):
             s += "<g id=\"{}\">\n".format(group_id)
-            for curve in self.__curves:
+            for curve in curves:
                 s += "<path fill=\"none\" stroke-width=\"1.0\" stroke=\"#000000\" d=\""
                 is_first = True
                 for point in curve.points:

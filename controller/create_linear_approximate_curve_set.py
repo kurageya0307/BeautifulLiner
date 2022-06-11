@@ -255,21 +255,22 @@ def getPointsFromOneCubicBezierCurveSegment(ctrl_p, micro_segment_length):
     return return_points
 #end def
 
-def convert(cubic_bezier_curve_set_dict, micro_segment_length):
-    linear_approximate_curve_set_dict = {}
+def createLinearApproximateCurve(cubic_bezier_curve_set, micro_segment_length):
+    linear_approximate_curve_set = LinearApproximateCurveSet()
 
-    for group_id, curve_set in cubic_bezier_curve_set_dict.items():
-        linear_approximate_curve_set_dict[group_id] = LinearApproximateCurveSet()
-        for curve in curve_set.curves:
+    for group_id, curves in cubic_bezier_curve_set:
+        the_curves = []
+        for curve in curves:
             linear_approximate_curve = LinearApproximateCurve()
             for ctrl_p in curve.control_points:
                 for point in getPointsFromOneCubicBezierCurveSegment(ctrl_p, micro_segment_length):
                     linear_approximate_curve.append(point)
                 #end for
             #end for
-            linear_approximate_curve_set_dict[group_id].append(linear_approximate_curve)
+            the_curves.append(linear_approximate_curve)
         #end for
+        linear_approximate_curve_set.append(group_id, the_curves)
     #end for
 
-    return linear_approximate_curve_set_dict
+    return linear_approximate_curve_set
 #end def
