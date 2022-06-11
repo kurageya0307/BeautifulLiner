@@ -1,5 +1,5 @@
 
-import numpy
+import math
 from point import Point
 class Vector:
     def __init__(self, point_a, point_b):
@@ -32,6 +32,6 @@ class Vector:
     #end
 
     def abs(self):
-        return numpy.sqrt( self.__x*self.__x + self.__y*self.__y )
+        return math.sqrt( self.__x*self.__x + self.__y*self.__y )
     #end
 #end
