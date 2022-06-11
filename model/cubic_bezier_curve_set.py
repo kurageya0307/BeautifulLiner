@@ -18,7 +18,7 @@ import numpy as np
 #                @@                                                                   @@        |                      |    |
 #                 @@                                                                @@@         |                      |    |
 #                  @@                                                              @@           |                      |    |
-#                  @@                                                           @@@            |                      |    |
+#                  @@                                                           @@@             |                      |    |
 #                    @@                                                        @@@              |<- CubicBezierCurve   |    |
 #                     @@                                                     @@@                |                      |    |
 #                      @@                                                  @@@                  |                      |    |
@@ -87,10 +87,10 @@ class CubicBezierCurveSet:
     def append(self, group_id: str, curves: List[CubicBezierCurve]):
         if type(group_id) is not str:
             raise ValueError("appending group_id must be str")
+        #end if
         if type(curves) is not list:
             raise ValueError("appending curves must be list")
-
-
+        #end if
         self.__group_ids.append(group_id)
         self.__layered_curves.append(curves)
     #end
@@ -100,10 +100,5 @@ class CubicBezierCurveSet:
             yield group_id, curves
         #end for
     #end
-
-    #@property
-    #def curves(self):
-    #    return self.__layered_curves
-    ##end
 #end
 

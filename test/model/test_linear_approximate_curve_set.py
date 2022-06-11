@@ -2,7 +2,6 @@
 import os
 import sys
 
-                                                                                                                                                                                                                                                                                                            
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../model'))
 from point import Point
 from linear_approximate_curve import LinearApproximateCurve
@@ -22,32 +21,32 @@ class TestLinearApproximateCurveSet(unittest.TestCase):
         curve.append(p2)
         curve.append(p3)
 
+        l = [curve, curve]
+
         self.curve_set = LinearApproximateCurveSet()
-        self.curve_set.append(curve)
-        self.curve_set.append(curve)
-    #end
+        self.curve_set.append("a", l)
+        self.curve_set.append("b", l)
 
-    def test_init_and_append(self):
-        curves = self.curve_set.curves
-        points = curves[0].points
-        self.assertEqual(points[0].to_s(), "0.000,0.000")
-        self.assertEqual(points[1].to_s(), "1.000,2.000")
-        self.assertEqual(points[2].to_s(), "10.000,20.000")
-        self.assertEqual(points[3].to_s(), "100.000,200.000")
-
-        points = curves[1].points
-        self.assertEqual(points[0].to_s(), "0.000,0.000")
-        self.assertEqual(points[1].to_s(), "1.000,2.000")
-        self.assertEqual(points[2].to_s(), "10.000,20.000")
-        self.assertEqual(points[3].to_s(), "100.000,200.000")
+        the_answer_point_str = ( ("0.000,0.000"), ("1.000,2.000"), ("10.000,20.000"), ("100.000,200.000") )
+        for group_id, curves in self.curve_set:
+            for curve in curves:
+                for j, point in enumerate(curve.points):
+                    self.assertEqual(point.to_s(), the_answer_point_str[j])
+                #end for
+            #end for
+        #end for
     #end
 
     def test_raise_error_appending_as_int(self):
         self.raise_error_curve_set = LinearApproximateCurveSet()
         with self.assertRaises(ValueError) as e:
-            self.raise_error_curve_set.append(1)
+            self.raise_error_curve_set.append("a", 1)
         #end with
-        self.assertEqual(e.exception.args[0], 'appending curve must be LinearApproximateCurve')
+        self.assertEqual(e.exception.args[0], 'appending curves must be list')
+        with self.assertRaises(ValueError) as e:
+            self.raise_error_curve_set.append(1, [1, 1])
+        #end with
+        self.assertEqual(e.exception.args[0], 'appending group_id must be str')
     #end
 #end
 

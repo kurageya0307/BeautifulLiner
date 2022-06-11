@@ -57,7 +57,7 @@ from linear_approximate_curve_set import LinearApproximateCurveSet
 #          o : The line between Q1 and Q2
 #          " : The line between R0 and R1
 #
-#          @ : The point on cubic Bezier curve at this timing
+#          @ : The point on cubic Bezier curve at current timing
 #
 #          * : The final resulting cubic Bezier curve
 #                                                                                                                                        
@@ -105,7 +105,7 @@ from linear_approximate_curve_set import LinearApproximateCurveSet
 #    P1 ...........q1........................................   P2
 #     __          x  ooooo                                         `
 #      __        x        ooooooooor1ooooooooooooooooooo           ``
-#       _        x                                     oooooooooo    ``
+#       _        x                                     ooooooooo    ``
 #        _       x                  *****************           oooooo q2 
 #         _     x           *********               **********           `` 
 #          _    x        ****                                 ******       `` 
@@ -181,13 +181,13 @@ def getDivisionNum(ctrl_p, micro_segment_length):
 def getEquallyDividedPointsBetween2Points(point_a, point_b, division_num):
     delta_x = (point_b.x - point_a.x) / float(division_num)
     delta_y = (point_b.y - point_a.y) / float(division_num)
-  
+
     return_points = []
     for i in range(division_num):
-      return_points.append(  Point( point_a.x + delta_x*float(i), point_a.y + delta_y*float(i) )  )
+        return_points.append(  Point( point_a.x + delta_x*float(i), point_a.y + delta_y*float(i) )  )
     #end
     return_points.append(point_b)
-  
+
     return return_points
 #end def
 
