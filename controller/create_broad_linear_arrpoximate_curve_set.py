@@ -129,18 +129,21 @@ def getDeltaPoint(prev_point, current_point, delta):
     final_y = current_point.y + ( vec.x * delta/len_vec)
     return Point(final_x, final_y)
 #end 
-def getSlightlyAwayCurve(curve):
+def getSlightlyAwayCurve(curve, max_delta):
     the_curve = LinearApproximateCurve()
     points = curve.points
+
+    half_length = len(points)/2.0 - 0.5 
 
     # first point is equal to original first point
     the_curve.append( points[0] )
 
     # middle points are slightly away points
     for i in range( len(points) - 2 ):
+        delta = max_delta * ( half_length - abs(half_length - i - 1) ) / half_length
         prev_point = points[i]
         current_point = points[i+1]
-        the_point = getDeltaPoint(prev_point, current_point, 1.0)
+        the_point = getDeltaPoint(prev_point, current_point, delta)
         if the_point is not None:
             the_curve.append(the_point)
         #end if
@@ -156,9 +159,10 @@ def getSlightlyAwayCurve(curve):
 
     # middle points are slightly away points
     for i in range( len(reversed_points) - 2 ):
+        delta = max_delta * ( half_length - abs(half_length - i - 1) ) / half_length
         prev_point = reversed_points[i]
         current_point = reversed_points[i+1]
-        the_point = getDeltaPoint(prev_point, current_point, 1.0)
+        the_point = getDeltaPoint(prev_point, current_point, delta)
         if the_point is not None:
             the_curve.append(the_point)
         #end if
@@ -170,10 +174,10 @@ def getSlightlyAwayCurve(curve):
     return the_curve
 #end 
 
-def getSlightlyAwayCurves(curves):
+def makeSlightlyAwayCurves(curves, max_delta):
     return_curves = []
     for curve in curves:
-        return_curves.append( getSlightlyAwayCurve(curve) )
+        return_curves.append( getSlightlyAwayCurve(curve, max_delta) )
     #end for
     return return_curves
 #end 
@@ -181,7 +185,7 @@ def getSlightlyAwayCurves(curves):
 def createBroadLinearApproximateCurveSet(linear_approximate_curve_set, max_delta):
     broad_linear_approximate_curve_set = LinearApproximateCurveSet()
     for group_id, curves in linear_approximate_curve_set:
-        broad_linear_approximate_curve_set.append( group_id, getSlightlyAwayCurves(curves) )
+        broad_linear_approximate_curve_set.append( group_id, makeSlightlyAwayCurves(curves, max_delta) )
     #end for
     return broad_linear_approximate_curve_set
 #end
