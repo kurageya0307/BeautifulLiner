@@ -12,6 +12,7 @@ from cubic_bezier_curve_set import CubicBezierCurveSet
 
 from linear_approximate_curve import LinearApproximateCurve
 from linear_approximate_curve_set import LinearApproximateCurveSet
+from broad_linear_approximate_curve_set import BroadLinearApproximateCurveSet
 
 # 
 # The Algorithm
@@ -129,7 +130,7 @@ def getDeltaPoint(prev_point, current_point, delta):
     final_y = current_point.y + ( vec.x * delta/len_vec)
     return Point(final_x, final_y)
 #end 
-def getSlightlyAwayCurve(curve, max_delta):
+def getSlightlyAwayGoingCurve(curve, max_delta):
     the_curve = LinearApproximateCurve()
     points = curve.points
 
@@ -152,10 +153,20 @@ def getSlightlyAwayCurve(curve, max_delta):
     # last point is equal to original last point
     the_curve.append( points[-1] )
 
+    return the_curve
+#end 
+
+def getSlightlyAwayReturningCurve(curve, max_delta):
+    the_curve = LinearApproximateCurve()
+    points = curve.points
+
+    half_length = len(points)/2.0 - 0.5 
+
+    # first point is equal to original first point
     reversed_points = list( reversed(curve.points) )
 
-#    # first point is equal to original first point
-#    the_curve.append( reversed_points[0] )
+    # first point is equal to original first point
+    the_curve.append( reversed_points[0] )
 
     # middle points are slightly away points
     for i in range( len(reversed_points) - 2 ):
@@ -174,18 +185,26 @@ def getSlightlyAwayCurve(curve, max_delta):
     return the_curve
 #end 
 
-def makeSlightlyAwayCurves(curves, max_delta):
+def makeSlightlyAwayGoingCurves(curves, max_delta):
     return_curves = []
     for curve in curves:
-        return_curves.append( getSlightlyAwayCurve(curve, max_delta) )
+        return_curves.append( getSlightlyAwayGoingCurve(curve, max_delta) )
+    #end for
+    return return_curves
+#end 
+
+def makeSlightlyAwayReturningCurves(curves, max_delta):
+    return_curves = []
+    for curve in curves:
+        return_curves.append( getSlightlyAwayReturningCurve(curve, max_delta) )
     #end for
     return return_curves
 #end 
 
 def createBroadLinearApproximateCurveSet(linear_approximate_curve_set, max_delta):
-    broad_linear_approximate_curve_set = LinearApproximateCurveSet()
+    broad_linear_approximate_curve_set = BroadLinearApproximateCurveSet()
     for group_id, curves in linear_approximate_curve_set:
-        broad_linear_approximate_curve_set.append( group_id, makeSlightlyAwayCurves(curves, max_delta) )
+        broad_linear_approximate_curve_set.append( group_id, makeSlightlyAwayGoingCurves(curves, max_delta), makeSlightlyAwayReturningCurves(curves, max_delta) )
     #end for
     return broad_linear_approximate_curve_set
 #end
