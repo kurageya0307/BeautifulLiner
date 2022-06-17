@@ -68,7 +68,7 @@ class BroadLinearApproximateCurveSet:
 
     def __iter__(self):
         for group_id, going_curves, returning_curves in zip(self.__group_ids, self.__layered_going_curves, self.__layered_returning_curves):
-            yield group_id, going_curves, return_curves
+            yield group_id, going_curves, returning_curves
         #end for
     #end
 

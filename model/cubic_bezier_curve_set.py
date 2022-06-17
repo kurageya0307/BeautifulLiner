@@ -100,5 +100,32 @@ class CubicBezierCurveSet:
             yield group_id, curves
         #end for
     #end
+
+    def to_svg_str(self):
+        s = ""
+        for group_id, curves in zip(self.__group_ids, self.__layered_curves):
+            s += "<g id=\"{}\">\n".format(group_id)
+            for curve in curves:
+                s += "<path fill=\"#00ff00\" stroke-width=\"1.0\" stroke=\"#none\" d=\""
+                is_first = True
+                for i, ctl_p in enumerate(curve.control_points):
+                    if is_first:
+                        s += "M {:.3f} {:.3f} ".format(ctl_p.p0.x, ctl_p.p0.y)
+                        s += "C {:.3f} {:.3f} ".format(ctl_p.p1.x, ctl_p.p1.y)
+                        s += " {:.3f} {:.3f} ".format(ctl_p.p2.x, ctl_p.p2.y)
+                        s += " {:.3f} {:.3f} ".format(ctl_p.p3.x, ctl_p.p3.y)
+                        is_first = False
+                    else:
+                        s += "C {:.3f} {:.3f} ".format(ctl_p.p1.x, ctl_p.p1.y)
+                        s += " {:.3f} {:.3f} ".format(ctl_p.p2.x, ctl_p.p2.y)
+                        s += " {:.3f} {:.3f} ".format(ctl_p.p3.x, ctl_p.p3.y)
+                    #end if
+                #end for
+                s += "Z \"/>\n"
+            #end for
+            s += "</g>"
+        #end for
+        return s
+    #end
 #end
 
