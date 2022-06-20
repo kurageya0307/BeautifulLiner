@@ -13,6 +13,11 @@ from cubic_bezier_curve_set import CubicBezierCurveSet
 from linear_approximate_curve import LinearApproximateCurve
 from linear_approximate_curve_set import LinearApproximateCurveSet
 
+from point_sequence import PointSequence
+from part_of_curve import PartOfCurve
+from curve import Curve
+from curve_set_in_a_layer import CurveSetInALayer
+from all_curve_set import AllCurveSet
 # 
 # The Algorithm
 #                                                                                                                                        
@@ -255,22 +260,27 @@ def getPointsFromOneCubicBezierCurveSegment(ctrl_p, micro_segment_length):
     return return_points
 #end def
 
-def createLinearApproximateCurve(cubic_bezier_curve_set, micro_segment_length):
-    linear_approximate_curve_set = LinearApproximateCurveSet()
+def convertBezierToLinearApproximateCurve(cubic_bezier_curve, micro_segment_length):
+    linear_approximate_curve = AllCurveSet()
 
-    for group_id, curves in cubic_bezier_curve_set:
-        the_curves = []
-        for curve in curves:
-            linear_approximate_curve = LinearApproximateCurve()
-            for ctrl_p in curve.control_points:
+    for layer_name, curve_set_in_a_layer in cubic_bezier_curve:
+        linear_curve_set = CurveSetInALayer()
+        for curve in curve_set_in_a_layer:
+            linear_curve = Curve() # linear_curve ??? umm....
+            for part in curve:
+                ctrl_p = part.control_point
+                linear_part = PartOfCurve()
+                p_seq = PointSequence()
                 for point in getPointsFromOneCubicBezierCurveSegment(ctrl_p, micro_segment_length):
-                    linear_approximate_curve.append(point)
+                    p_seq.append(point)
                 #end for
+                linear_part.set_point_sequence(p_seq)
+                linear_curve.append(linear_part)
             #end for
-            the_curves.append(linear_approximate_curve)
+            linear_curve_set.append(linear_curve)
         #end for
-        linear_approximate_curve_set.append(group_id, the_curves)
+        linear_approximate_curve.append(layer_name, linear_curve_set)
     #end for
 
-    return linear_approximate_curve_set
+    return linear_approximate_curve
 #end def
