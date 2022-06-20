@@ -9,13 +9,18 @@ from cubic_bezier_control_point import CubicBezierControlPoint
 from cubic_bezier_curve import CubicBezierCurve
 from cubic_bezier_curve_set import CubicBezierCurveSet
 
+from part_of_curve import PartOfCurve
+from curve import Curve
+from curve_set_in_a_layer import CurveSetInALayer
+from all_curve_set import AllCurveSet
+
 import pprint as pp
 import re
 
 # IN  nodeValue of d in path of svg as string
 # OUT CubicBezierCurve
 def makeCubicBezierCurve(d_str):
-    cubic_bezier_curve = CubicBezierCurve()
+    curve = Curve()
 
     point_strs = re.split("[C|L|M|Z]", d_str)
     point_strs.pop(0)
@@ -52,35 +57,35 @@ def makeCubicBezierCurve(d_str):
             p2 = Point( float(items[2]), float(items[3]) )
             p3 = Point( float(items[4]), float(items[5]) )
         #end if
-        ctl_p = CubicBezierControlPoint(last_point, p1, p2, p3)
-        cubic_bezier_curve.append(ctl_p)
+        part = PartOfCurve()
+        part.set_control_point( CubicBezierControlPoint(last_point, p1, p2, p3) )
+        curve.append(part)
         last_point = p3
     #end for
 
-    return cubic_bezier_curve
+    return curve
 #end def
 
-def makeCubicBezierCurves(paths):
-    return_list = []
+def makeCubicBezierCurveSet(paths):
+    curve_set = CurveSetInALayer()
     for path in paths:
-        return_list.append(  makeCubicBezierCurve( path.getAttributeNode('d').nodeValue )  )
+        curve_set.append(  makeCubicBezierCurve( path.getAttributeNode('d').nodeValue )  )
     #end for
-    return return_list
+    return curve_set
 #end
 
 # IN  file_name as string
-# OUT {"group_id": CubicBezierCurveSet, "group_id":CubicBezierCurveSet, ...} as dict
-#      group_id is name of layer in Vectornator or Inkscape
-def createCubicBezierCurveSet(file_name):
-    cubic_bezier_curve_set = CubicBezierCurveSet()
+# OUT AllCurveSet
+def readCubicBezierCurveFromSvgFile(file_name):
+    cubic_bezier_curve = AllCurveSet()
     
     svg = SvgData(file_name)
     for group_paths_set in svg.get_group_paths_tuple():
         group = group_paths_set[0]
         paths = group_paths_set[1]
-        group_id = group.getAttributeNode('id').nodeValue
-        cubic_bezier_curve_set.append(group_id, makeCubicBezierCurves(paths) )
+        layer_name = group.getAttributeNode('id').nodeValue
+        cubic_bezier_curve.append(layer_name, makeCubicBezierCurveSet(paths) )
     #end for group_paths_set
 
-    return cubic_bezier_curve_set
+    return cubic_bezier_curve
 #end def
