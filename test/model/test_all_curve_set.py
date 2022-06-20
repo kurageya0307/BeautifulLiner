@@ -45,17 +45,17 @@ class TestCubicBezierCurve(unittest.TestCase):
         curve_set.append(curve)
         
         all_curve_set = AllCurveSet()
-        all_curve_set.append(curve_set)
-        all_curve_set.append(curve_set)
-        all_curve_set.append(curve_set)
-        all_curve_set.append(curve_set)
+        all_curve_set.append("layer1", curve_set)
+        all_curve_set.append("layer2", curve_set)
+        all_curve_set.append("layer3", curve_set)
+        all_curve_set.append("layer4", curve_set)
 
         ctl_p = all_curve_set[0][0][0].control_point
 
         self.assertEqual(ctl_p.p0.x, 0.0)
         self.assertEqual(ctl_p.p1.x, 1.0)
 
-        for curve_set_in_a_layer in all_curve_set:
+        for layer_name, curve_set_in_a_layer in all_curve_set:
             for curve in curve_set_in_a_layer:
                 for part in curve:
                     ctl_p = part.control_point
@@ -81,17 +81,17 @@ class TestCubicBezierCurve(unittest.TestCase):
         curve_set.append(curve)
 
         all_curve_set = AllCurveSet()
-        all_curve_set.append(curve_set)
-        all_curve_set.append(curve_set)
-        all_curve_set.append(curve_set)
-        all_curve_set.append(curve_set)
+        all_curve_set.append("layer1", curve_set)
+        all_curve_set.append("layer2", curve_set)
+        all_curve_set.append("layer3", curve_set)
+        all_curve_set.append("layer4", curve_set)
 
         p_seq = all_curve_set[0][0][0].point_sequence
 
         self.assertEqual(p_seq[0].x, 0.0)
         self.assertEqual(p_seq[1].x, 1.0)
 
-        for curve_set_in_a_layer in all_curve_set:
+        for layer_name, curve_set_in_a_layer in all_curve_set:
             for curve in curve_set_in_a_layer:
                 for part in curve:
                     p_seq = part.point_sequence
