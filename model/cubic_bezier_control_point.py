@@ -1,60 +1,83 @@
-
-from point import Point
-
 #   Point
 #   |    
 #   V    
-#   C                                                                                         --+                    --+
-#   @@@@                                                                                        |                      |
-#      @@@@===                                                                                  |                      |
-#         @@@========                                                                           |                      |
-#           @@      =======                                                                @    |                      |
-#            @@@         ===C                                                            @@@    |                      |
-#              @@@                                                                      @@@     |                      |
-#               @@                                                                     @@       |                      |
-#                @@                                                                   @@        |                      |
-#                 @@                                                                @@@         |                      |
-#                  @@                                                              @@           |                      |
-#                   @@                                                           @@@            |                      |
-#                    @@                                                        @@@              |<- CubicBezierCurve   |
-#                     @@                                                     @@@                |                      |
-#                      @@                                                  @@@                  |                      |
-#                      @@@                                               @@@                    |                      |
-#                       @@@                                           @@@@                      |                      |
-#                         @                                         @@@                         |                      |
-#                         @@@                                    @@@@@                          |                      |
-#                           @@                               @@@@@                              |                      |
-#                            @@@                           @@@@                                 |                      |
-#                              @@@                    @@@@@@                                    |                      |
-#                                @@@@@@@@     @@@@@@@@@@                                        |                      |
-#                                     @@@@@C@@@@                                              --+                      |
-#                        ===============                                                                               |
-#                  C=======                                                                                            |
-#  |                                        |                                                                          | <- CubicBezierCurveSet
-#  +----------------------------------------+                                                                          |
-#         A                                                                                                            |
-#         |                                                                                                            |
-#    CubicBezierControlPoint                                                                                           |
-#                                                                                                                      |
-#                                                                                                                      |
-#              @@@@@@@@@@@@@@@@@@@@@@@@@                                                                               |
-#         @@@@@@@@@               @@@@@@@@@@@@@@@@@@@@                                        --+                      |
-#        @@@                                      @@@@@@@@@@                                    |                      |
-#       @@                                              @@@@@@@@@@@@@                           |                      |
-#                                                                  @@@@@@@@@@                   |<- CubicBezierCurve   |
-#                                                                          @@@@@@               |                      |
-#                                                                              @@@@@@@@@        |                      |
-#                                                                                     @@@@@@  --+                    --+
+#   C                                                                                         --+         --+                     --+
+#   @@@@                                                                                        |           |                       |
+#      @@@@===                                                                                  |           |                       |
+#         @@@========                                                                           |           |                       |
+#           @@      =======                                                                @    |           |                       |
+#            @@@         ===C                                                            @@@    |           |                       |
+#              @@@                                                                      @@@     |           |                       |
+#               @@                                                                     @@       |           |                       |
+#                @@                                                                   @@        |           |                       |
+#                 @@                                                                @@@         |           |                       |
+#                  @@                                                              @@           |           |                       |
+#                  @@                                                           @@@             |           |                       |
+#                    @@                                                        @@@              |<- Curve   |                       |
+#                     @@                                                     @@@                |           |                       |
+#                      @@                                                  @@@                  |           |                       |
+#                      @@@                                               @@@                    |           |                       |
+#                       @@@                                           @@@@                      |           |                       |
+#                         @                                         @@@                         |           |                       |
+#                         @@@                                    @@@@@                          |           |                       |
+#                           @@                               @@@@@                              |           |                       |
+#                            @@@                           @@@@                                 |           |                       |
+#                              @@@                    @@@@@@                                    |           |                       |
+#                                @@@@@@@@     @@@@@@@@@@                                        |           |                       |
+#                                     @@@@@C@@@@                                              --+           |                       |
+#                        ===============                                                                    | <- CurveSetInALayer   |
+#                  C=======                                                                                 |                       |
+#  |                                        |                                                               |                       | <- AllCurveSet
+#  +----------------------------------------+                                                               |                       |
+#         A                                                                                                 |                       |
+#         |                                                                                                 |                       |
+#    PartOfCurve                                                                                            |                       |
+#                                                                                                           |                       |
+#                                                                                                           |                       |
+#              @@@@@@@@@@@@@@@@@@@@@@@@@                                                                    |                       |
+#         @@@@@@@@@               @@@@@@@@@@@@@@@@@@@@                                        --+           |                       |
+#        @@@                                      @@@@@@@@@@                                    |           |                       |
+#       @@                                              @@@@@@@@@@@@@                           |           |                       |
+#                                                                  @@@@@@@@@@                   |<- Curve   |                       |
+#                                                                          @@@@@@               |           |                       |
+#                                                                              @@@@@@@@@        |           |                       |
+#                                                                                     @@@@@@  --+         --+                       |
+#                                                                                                                                   |
+#                                                                                             --+         --+                       |
+#     @@                                                                                        |           |                       |
+#      @@@@                                                                                     |           |                       |
+#         @@@                                                                                   |           |                       |
+#           @@                                                                             @    |<- Curve   |                       |
+#            @@@                                                                  @@@@@@@@@@    |           |                       |
+#              @@@@@@@@@@@@@@@@@@@@@                                @@@@@@@@@@@@@@@@            |           |                       |
+#                              @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                          --+           |                       |
+#                                                                                                           | <- CurveSetInALayer   |
+#                                                                                                           |                       |
+#              @@@@@@@@@@@@@@@@@@@@@@@@@                                                                    |                       |
+#         @@@@@@@@@               @@@@@@@@@@@@@@@@@@@@                                        --+           |                       |
+#        @@@                                      @@@@@@@@@@                                    |           |                       |
+#       @@                                              @@@@@@@@@@@@@                           |           |                       |
+#                                                                  @@@@@@@@@@                   |<- Curve   |                       |
+#                                                                          @@@@@@               |           |                       |
+#                                                                              @@@@@@@@@        |           |                       |
+#                                                                                     @@@@@@  --+         --+                     --+
 #
-#  Point                   : One point which has x and y coordinates
-#  CubicBezierControlPoint : Control points of a cubic Bezier curve consisting of 4 points.
-#                            "C" inthe above figure
-#  CubicBezierCurve        : One cubic Bezier curve
-#                            It has array of CubicBezierControlPoint
-#  CubicBezierCurveSet     : A set of cubic Bezier curves
-#                            It has array of CubicBezierCurve
+#  Point                    : One point which has x and y coordinates
+#  PartOfCurve
+#   CubicBezierControlPoint : In cubic Bezier curve case
+#                             Control points of a cubic Bezier curve consisting of 4 points.
+#                             "C" in the above figure
+#   PointSequence           : In linear approximate curve case
+#                             A point sequence that is finally approximated by the four control points of a cubic Bezier curve
+#  Curve                    : One curve
+#                             It has a list of PartOfCurve
+#  CurveSetInALayer         : A set of curves
+#                             It has a list of Curve
+#  AllCurveSet              : Layered curve sets in all system
+#                             It has a dict of CurveSetInALayer with "layer name" as key
 #
 
+from point import Point
 class CubicBezierControlPoint:
     def __init__(self, p0, p1, p2, p3):
         if not type(p0) is Point:

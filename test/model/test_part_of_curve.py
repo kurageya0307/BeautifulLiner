@@ -41,9 +41,9 @@ class TestPartOfCurve(unittest.TestCase):
         part = PartOfCurve()
         part.set_point_sequence(self.point_seq)
 
-        points = part.point_sequence.points
+        p_seq = part.point_sequence
 
-        self.assertEqual(points[0].x, self.point_seq.points[0].x)
+        self.assertEqual(p_seq[0].x, 0.0)
     #end
 
     def test_raise_error_appending_as_int(self):
