@@ -13,9 +13,8 @@ class PointSequence():
         self.__points.append(point)
     #end
 
-    @property
-    def points(self):
-        return self.__points
+    def __getitem__(self, index):
+        return self.__points[index]
     #end
 #end
 
