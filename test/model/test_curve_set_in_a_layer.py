@@ -6,6 +6,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../../model'))
 from point import Point
 from cubic_bezier_control_point import CubicBezierControlPoint
 from curve import Curve
+from curve_set_in_a_layer import CurveSetInALayer
 import unittest
 
 from part_of_curve import PartOfCurve
@@ -28,7 +29,7 @@ class TestCubicBezierCurve(unittest.TestCase):
         self.point_seq.append(p3)
     #end
 
-    def test_cubic_bezier_curve(self):
+    def test_cubic_bezier_curve_set(self):
         part = PartOfCurve()
         part.set_control_point(self.ctl_p0123)
 
@@ -37,13 +38,18 @@ class TestCubicBezierCurve(unittest.TestCase):
         curve.append(part)
         curve.append(part)
 
-        ctl_p = curve[0].control_point
+        curve_set = CurveSetInALayer()
+        curve_set.append(curve)
+        curve_set.append(curve)
+        curve_set.append(curve)
+
+        ctl_p = curve_set[0][0].control_point
 
         self.assertEqual(ctl_p.p0.x, 0.0)
         self.assertEqual(ctl_p.p1.x, 1.0)
     #end
 
-    def test_linear_approximate_curve(self):
+    def test_linear_approximate_curve_set(self):
         part = PartOfCurve()
         part.set_point_sequence(self.point_seq)
 
@@ -52,7 +58,12 @@ class TestCubicBezierCurve(unittest.TestCase):
         curve.append(part)
         curve.append(part)
 
-        p_seq = curve[0].point_sequence
+        curve_set = CurveSetInALayer()
+        curve_set.append(curve)
+        curve_set.append(curve)
+        curve_set.append(curve)
+
+        p_seq = curve_set[0][0].point_sequence
 
         self.assertEqual(p_seq[0].x, 0.0)
         self.assertEqual(p_seq[1].x, 1.0)

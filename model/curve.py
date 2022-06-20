@@ -19,5 +19,9 @@ class Curve:
     def parts(self):
         return self.__parts
     #end
+
+    def __getitem__(self, index):
+        return self.__parts[index]
+    #end
 #end
 
