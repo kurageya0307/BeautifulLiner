@@ -85,7 +85,7 @@ class CurveSetInALayer:
     #end
 
     def append(self, curve: Curve):
-        if type(curve) is not Curve:
+        if not isinstance(curve, Curve):
             raise ValueError("appending curvs must be Curve")
         #end if
         self.__curves.append(curve)
