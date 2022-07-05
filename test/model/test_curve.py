@@ -119,6 +119,18 @@ class TestCurve(unittest.TestCase):
         self.assertEqual(e_rect.m.x, 39.0)
         self.assertEqual(e_rect.m.y, 39.0)
     #end
+
+    def test_segments(self):
+        curve1 = LinearApproximateCurve()
+        for i in range(40):
+            curve1.append(  Point( float(i), float(i) )  )
+        #end for
+
+        segments = curve1.getFullSegments()
+        self.assertEqual( segments[0].p1.x, 0.0 )
+        self.assertEqual( segments[0].p2.x, 1.0 )
+    #end
+
 #end
 
 if __name__ == '__main__':
