@@ -77,17 +77,17 @@
 #                             It has a dict of CurveSetInALayer with "layer name" as key
 #
 
-from point import Point
+from sympy.geometry import *
 class CubicBezierControlPoint:
     def __init__(self, p0, p1, p2, p3):
-        if not type(p0) is Point:
-            raise ValueError("p0 must be Point")
-        if not type(p1) is Point:
-            raise ValueError("p1 must be Point")
-        if not type(p2) is Point:
-            raise ValueError("p2 must be Point")
-        if not type(p3) is Point:
-            raise ValueError("p3 must be Point")
+        if not type(p0) is Point2D:
+            raise ValueError("p0 must be Point2D")
+        if not type(p1) is Point2D:
+            raise ValueError("p1 must be Point2D")
+        if not type(p2) is Point2D:
+            raise ValueError("p2 must be Point2D")
+        if not type(p3) is Point2D:
+            raise ValueError("p3 must be Point2D")
 
         self.__p0 = Point(p0.x, p0.y)
         self.__p1 = Point(p1.x, p1.y)

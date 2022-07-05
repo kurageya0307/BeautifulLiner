@@ -3,14 +3,12 @@ import os
 import sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../model'))
-from point import Point
+from sympy.geometry import *
 from cubic_bezier_control_point import CubicBezierControlPoint
 from curve import CubicBezierCurve
 from curve import LinearApproximateCurve
 from curve_set_in_a_layer import CurveSetInALayer
 import unittest
-
-from point_sequence import PointSequence
 
 class TestCurveSetInALayer(unittest.TestCase):
     def setUp(self):

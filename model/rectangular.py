@@ -1,4 +1,4 @@
-from point import Point
+from sympy.geometry import *
 
 class Rectangular:
     """

@@ -77,14 +77,13 @@
 #                             It has a dict of CurveSetInALayer with "layer name" as key
 #
 
-from point import Point
+from sympy.geometry import *
 
 from rectangular import Rectangular
 
 import math
 
 from cubic_bezier_control_point import CubicBezierControlPoint
-from point_sequence import PointSequence
 
 from abc import ABCMeta
 from abc import abstractmethod
@@ -127,8 +126,8 @@ class LinearApproximateCurve(Curve):
     #end
 
     def append(self, point):
-        if not type(point) is Point:
-            raise ValueError("appending part must be Point")
+        if not type(point) is Point2D:
+            raise ValueError("appending part must be Point2D")
         #end
         self.__points.append(point)
     #end
@@ -189,6 +188,17 @@ class LinearApproximateCurve(Curve):
         return Rectangular( self.min(start_index=start_index), self.max(start_index=start_index) )
     #end
 
+    def getStartPoints(self, ratio):
+        end_index = int( ratio*len(self.__points) )
+        return self.__points[0:end_index]
+    #end
+
+    def getEndPoints(self, ratio):
+        start_index = len(self.__points) - int( ratio*len(self.__points) )
+        return self.__points[start_index:-1]
+    #end
+
+
 ##    def getTenPercenteRectangulars(self):
 ##        rects = []
 ##        num_point_sequence = len( self.__parts[0].point_sequence )
@@ -202,7 +212,7 @@ class LinearApproximateCurve(Curve):
 ##    #end
 
     @property
-    def point_sequence(self):
+    def points(self):
         return self.__points
     #end
 
