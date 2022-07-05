@@ -129,6 +129,12 @@ class TestCurve(unittest.TestCase):
         segments = curve1.getFullSegments()
         self.assertEqual( segments[0].p1.x, 0.0 )
         self.assertEqual( segments[0].p2.x, 1.0 )
+
+        s_segs = curve1.getStartSegments(0.1)
+        self.assertEqual( len(s_segs), 3 )
+
+        e_segs = curve1.getEndSegments(0.1)
+        self.assertEqual( len(e_segs), 3 )
     #end
 
 #end

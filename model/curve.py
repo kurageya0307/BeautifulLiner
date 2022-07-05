@@ -188,22 +188,30 @@ class LinearApproximateCurve(Curve):
         return Rectangular( self.min(start_index=start_index), self.max(start_index=start_index) )
     #end
 
-    def getFullSegments(self):
+    def getSegments(self, start_index=0, end_index=None):
+        if end_index is None:
+            end_index = len( self.__points )
+        #end if
+
         segments = []
-        for i in range(0, len(self.__points)-1):
+        for i in range(start_index, end_index - 1):
             segments.append(  Segment( (self.__points[i].x, self.__points[i].y), (self.__points[i+1].x, self.__points[i+1].y) )  )
         #end for
         return segments
     #end
-
-    def getStartPoints(self, ratio):
-        end_index = int( ratio*len(self.__points) )
-        return self.__points[0:end_index]
+    
+    def getFullSegments(self):
+        return self.getSegments()
     #end
 
-    def getEndPoints(self, ratio):
+    def getStartSegments(self, ratio):
+        end_index = int( ratio*len(self.__points) )
+        return self.getSegments(end_index=end_index)
+    #end
+
+    def getEndSegments(self, ratio):
         start_index = len(self.__points) - int( ratio*len(self.__points) )
-        return self.__points[start_index:-1]
+        return self.getSegments(start_index=start_index)
     #end
 
 
