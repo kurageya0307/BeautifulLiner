@@ -2,7 +2,7 @@
 import os
 import sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../controller'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../logic'))
 from read_cubic_bezier_curve_from_svg_file import *
 
 import unittest
@@ -18,21 +18,21 @@ class TestCreateCubicBezierCurveSetGroup(unittest.TestCase):
         s += "624.369,665.275\n"
         s += "615.909,650.653\n"
         s += "610.912,630.454\n"
-        self.assertEqual(curve[0].control_point.to_s(),s)
+        self.assertEqual(curve[0].to_s(),s)
 
         s = ""
         s += "610.912,630.454\n"
         s += "605.916,610.254\n"
         s += "602.648,598.519\n"
         s += "602.648,598.519\n"
-        self.assertEqual(curve[1].control_point.to_s(),s)
+        self.assertEqual(curve[1].to_s(),s)
 
         s = ""
         s += "602.648,598.519\n"
         s += "600.342,590.183\n"
         s += "601.495,594.351\n"
         s += "599.189,586.015\n"
-        self.assertEqual(curve[2].control_point.to_s(),s)
+        self.assertEqual(curve[2].to_s(),s)
     #end def testMakeCubicBezierCurve
 
     def testReadCubicBezierCurveFromSvgFile(self):
@@ -51,8 +51,7 @@ class TestCreateCubicBezierCurveSetGroup(unittest.TestCase):
         for layer_name, curve_set_in_a_layer in cubic_bezier_curve:
             self.assertEqual(layer_name, the_answer_layer_name[i])
             for curve in curve_set_in_a_layer:
-                for part in curve:
-                    ctrl_p = part.control_point
+                for ctrl_p in curve:
                     self.assertEqual(ctrl_p.to_s(), the_answer_ctrl_points_str[j])
                     j += 1
                 #end for
