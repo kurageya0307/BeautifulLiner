@@ -78,7 +78,7 @@
 #
 
 from curve_set_in_a_layer import CurveSetInALayer
-class AllCurveSet:
+class AllLayerCurveSet:
     def __init__(self):
         self.__layer_names = []
         self.__curve_sets = []
