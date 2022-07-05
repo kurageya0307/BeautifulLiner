@@ -78,7 +78,6 @@
 #
 
 from point import Point
-from part_of_curve import PartOfCurve
 
 from rectangular import Rectangular
 
