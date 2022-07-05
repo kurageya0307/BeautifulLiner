@@ -7,17 +7,11 @@ import math
 from point import Point
 from vector import Vector
 from cubic_bezier_control_point import CubicBezierControlPoint
-from cubic_bezier_curve import CubicBezierCurve
-from cubic_bezier_curve_set import CubicBezierCurveSet
 
-from linear_approximate_curve import LinearApproximateCurve
-from linear_approximate_curve_set import LinearApproximateCurveSet
-
-from point_sequence import PointSequence
-from part_of_curve import PartOfCurve
-from curve import Curve
+from curve import CubicBezierCurve
+from curve import LinearApproximateCurve
 from curve_set_in_a_layer import CurveSetInALayer
-from all_curve_set import AllCurveSet
+from all_layer_curve_set import AllLayerCurveSet
 # 
 # The Algorithm
 #                                                                                                                                        
@@ -261,21 +255,16 @@ def getPointsFromOneCubicBezierCurveSegment(ctrl_p, micro_segment_length):
 #end def
 
 def convertBezierToLinearApproximateCurve(cubic_bezier_curve, micro_segment_length):
-    linear_approximate_curve = AllCurveSet()
+    linear_approximate_curve = AllLayerCurveSet()
 
     for layer_name, curve_set_in_a_layer in cubic_bezier_curve:
         linear_curve_set = CurveSetInALayer()
         for curve in curve_set_in_a_layer:
-            linear_curve = Curve() # linear_curve ??? umm....
-            for part in curve:
-                ctrl_p = part.control_point
-                linear_part = PartOfCurve()
-                p_seq = PointSequence()
+            linear_curve = LinearApproximateCurve() # linear_curve ??? umm....
+            for ctrl_p in curve:
                 for point in getPointsFromOneCubicBezierCurveSegment(ctrl_p, micro_segment_length):
-                    p_seq.append(point)
+                    linear_curve.append( point )
                 #end for
-                linear_part.set_point_sequence(p_seq)
-                linear_curve.append(linear_part)
             #end for
             linear_curve_set.append(linear_curve)
         #end for

@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../model'))
 from point import Point
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../controller'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../logic'))
 from convert_bezier_to_linear_approximate_curve import *
 from read_cubic_bezier_curve_from_svg_file import readCubicBezierCurveFromSvgFile
 
@@ -350,13 +350,10 @@ class TestApproximateCurveWithLineSegments(unittest.TestCase):
         i:int = 0
         for layer_name, curve_set_in_a_layer in linear_approximate_curve:
             for curve in curve_set_in_a_layer:
-                for part in curve:
-                    p_seq = part.point_sequence
-                    for point in p_seq:
-                        self.assertEqual(point.x, the_answers[i][0])
-                        self.assertEqual(point.y, the_answers[i][1])
-                        i += 1
-                    #end for
+                for point in curve:
+                    self.assertEqual(point.x, the_answers[i][0])
+                    self.assertEqual(point.y, the_answers[i][1])
+                    i += 1
                 #end for
             #end for
         #end for
