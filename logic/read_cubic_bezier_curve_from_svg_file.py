@@ -6,13 +6,10 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../model'))
 from svg_data import SvgData
 from point import Point
 from cubic_bezier_control_point import CubicBezierControlPoint
-from cubic_bezier_curve import CubicBezierCurve
-from cubic_bezier_curve_set import CubicBezierCurveSet
+from curve import CubicBezierCurve
 
-from part_of_curve import PartOfCurve
-from curve import Curve
 from curve_set_in_a_layer import CurveSetInALayer
-from all_curve_set import AllCurveSet
+from all_layer_curve_set import AllLayerCurveSet
 
 import pprint as pp
 import re
@@ -20,7 +17,7 @@ import re
 # IN  nodeValue of d in path of svg as string
 # OUT CubicBezierCurve
 def makeCubicBezierCurve(d_str):
-    curve = Curve()
+    curve = CubicBezierCurve()
 
     point_strs = re.split("[C|L|M|Z]", d_str)
     point_strs.pop(0)
@@ -57,9 +54,7 @@ def makeCubicBezierCurve(d_str):
             p2 = Point( float(items[2]), float(items[3]) )
             p3 = Point( float(items[4]), float(items[5]) )
         #end if
-        part = PartOfCurve()
-        part.set_control_point( CubicBezierControlPoint(last_point, p1, p2, p3) )
-        curve.append(part)
+        curve.append( CubicBezierControlPoint(last_point, p1, p2, p3) )
         last_point = p3
     #end for
 
@@ -74,10 +69,12 @@ def makeCubicBezierCurveSet(paths):
     return curve_set
 #end
 
-# IN  file_name as string
-# OUT AllCurveSet
 def readCubicBezierCurveFromSvgFile(file_name):
-    cubic_bezier_curve = AllCurveSet()
+    """
+    IN  file_name as string
+    OUT AllLayerCurveSet
+    """
+    cubic_bezier_curve = AllLayerCurveSet()
     
     svg = SvgData(file_name)
     for group_paths_set in svg.get_group_paths_tuple():
