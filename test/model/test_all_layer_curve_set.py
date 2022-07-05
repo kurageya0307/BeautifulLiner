@@ -11,7 +11,6 @@ from curve_set_in_a_layer import CurveSetInALayer
 from all_layer_curve_set import AllLayerCurveSet
 import unittest
 
-from part_of_curve import PartOfCurve
 from point_sequence import PointSequence
 
 class TestAllLayerCurveSet(unittest.TestCase):

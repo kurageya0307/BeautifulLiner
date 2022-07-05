@@ -10,7 +10,6 @@ from curve import LinearApproximateCurve
 from curve_set_in_a_layer import CurveSetInALayer
 import unittest
 
-from part_of_curve import PartOfCurve
 from point_sequence import PointSequence
 
 class TestCurveSetInALayer(unittest.TestCase):

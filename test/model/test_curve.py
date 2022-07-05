@@ -4,12 +4,10 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../model'))
 from point import Point
 from cubic_bezier_control_point import CubicBezierControlPoint
-from curve import Curve
 from curve import CubicBezierCurve
 from curve import LinearApproximateCurve
 import unittest
 
-from part_of_curve import PartOfCurve
 from point_sequence import PointSequence
 
 class TestCurve(unittest.TestCase):
