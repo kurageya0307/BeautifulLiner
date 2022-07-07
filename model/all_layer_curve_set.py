@@ -105,9 +105,35 @@ class AllLayerCurveSet:
         return self.__curve_sets[index]
     #end
 
+    def __len__(self):
+        return len(self.__curve_sets)
+    #end
+
     @property
     def curves(self):
         return self.__curve_sets
     #end
 
+    def to_svg_str(self):
+        s = ""
+        #for group_id, curves in zip(self.__group_ids, self.__layered_curves):
+        for layer_name, curve_set in zip(self.__layer_names, self.__curve_sets):
+            s += "<g id=\"{}\" vectornator:layerName=\"{}\">\n".format(layer_name, layer_name)
+            for curve in curve_set:
+                s += "<path fill=\"none\" stroke-width=\"1.0\" stroke=\"#000000\" d=\""
+                is_first = True
+                for point in curve.points:
+                    if is_first:
+                        s += "M {:.3f} {:.3f} ".format(point.x, point.y)
+                        is_first = False
+                    else:
+                        s += "L {:.3f} {:.3f} ".format(point.x, point.y)
+                    #end if
+                #end for
+                s += "\"/>\n"
+            #end for
+            s += "</g>\n"
+        #end for
+        return s
+    #end
 #end
