@@ -130,6 +130,3 @@ dmypy.json
 
 # Vim swap file
 *.swp
-
-# Original
-misc/

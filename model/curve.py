@@ -172,7 +172,7 @@ class LinearApproximateCurve(Curve):
         return Rectangular(self.min(), self.max())
     #end
 
-    def getStartSubRegion(self, ratio):
+    def getTipSubRegion(self, ratio):
         """
         ratio is float 0 ~ 1 (Ex. 0.1 = 10%, 0.05 = 5% ...)
         """
@@ -180,7 +180,7 @@ class LinearApproximateCurve(Curve):
         return Rectangular( self.min(end_index=end_index), self.max(end_index=end_index) )
     #end
 
-    def getEndSubRegion(self, ratio):
+    def getTerminalSubRegion(self, ratio):
         """
         ratio is float 0 ~ 1 (Ex. 0.1 = 10%, 0.05 = 5% ...)
         """
@@ -188,44 +188,36 @@ class LinearApproximateCurve(Curve):
         return Rectangular( self.min(start_index=start_index), self.max(start_index=start_index) )
     #end
 
-    def getSegments(self, start_index=0, end_index=None):
-        if end_index is None:
-            end_index = len( self.__points )
-        #end if
-
-        segments = []
-        for i in range(start_index, end_index - 1):
-            segments.append(  Segment( (self.__points[i].x, self.__points[i].y), (self.__points[i+1].x, self.__points[i+1].y) )  )
-        #end for
-        return segments
-    #end
-    
-    def getFullSegments(self):
-        return self.getSegments()
-    #end
-
-    def getStartSegments(self, ratio):
+    def getTipPoints(self, ratio):
         end_index = int( ratio*len(self.__points) )
-        return self.getSegments(end_index=end_index)
+        return self.__points[0:end_index]
     #end
 
-    def getEndSegments(self, ratio):
+    def getMiddlePoints(self, ratio):
+        start_index = int( ratio*len(self.__points) )
+        end_index = len(self.__points) - int( ratio*len(self.__points) )
+        return self.__points[start_index:end_index]
+    #end
+
+    def getTerminalPoints(self, ratio):
         start_index = len(self.__points) - int( ratio*len(self.__points) )
-        return self.getSegments(start_index=start_index)
+        return self.__points[start_index:-1]
     #end
 
 
-##    def getTenPercenteRectangulars(self):
-##        rects = []
-##        num_point_sequence = len( self.__parts[0].point_sequence )
-##        ten_percent = math.floor( num_point_sequence/10.0 )
-##        for i in range(10):
-##            start_index = i*ten_percent - 1 if i != 0 else 0
-##            end_index   = (i + 1)*ten_percent
-##            rects.append(  Rectangular( self.min(start_index, end_index), self.max(start_index, end_index) )  )
-##        #end
-##        return rects
-##    #end
+    def getSplittedPointsAndRectangulars(self, split_num):
+        split_points = []
+        split_rects = []
+        num_points = len( self.__points )
+        percentage = math.floor( num_points / split_num )
+        for i in range(split_num):
+            start_index = i*percentage - 1 if i != 0 else 0
+            end_index   = (i + 1)*percentage
+            split_points.append( self.__points[start_index:end_index] )
+            split_rects.append(  Rectangular( self.min(start_index, end_index), self.max(start_index, end_index) )  )
+        #end
+        return split_points, split_rects
+    #end
 
     @property
     def points(self):

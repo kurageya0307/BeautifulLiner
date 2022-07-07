@@ -107,34 +107,29 @@ class TestCurve(unittest.TestCase):
             curve1.append(  Point( float(i), float(i) )  )
         #end for
 
-        s_rect = curve1.getStartSubRegion(0.1)
+        s_rect = curve1.getTipSubRegion(0.1)
         self.assertEqual(s_rect.q.x, 0.0)
         self.assertEqual(s_rect.q.y, 0.0)
         self.assertEqual(s_rect.m.x, 3.0)
         self.assertEqual(s_rect.m.y, 3.0)
 
-        e_rect = curve1.getEndSubRegion(0.1)
+        e_rect = curve1.getTerminalSubRegion(0.1)
         self.assertEqual(e_rect.q.x, 36.0)
         self.assertEqual(e_rect.q.y, 36.0)
         self.assertEqual(e_rect.m.x, 39.0)
         self.assertEqual(e_rect.m.y, 39.0)
     #end
 
-    def test_segments(self):
+    def test_split(self):
         curve1 = LinearApproximateCurve()
-        for i in range(40):
+        for i in range(400):
             curve1.append(  Point( float(i), float(i) )  )
         #end for
 
-        segments = curve1.getFullSegments()
-        self.assertEqual( segments[0].p1.x, 0.0 )
-        self.assertEqual( segments[0].p2.x, 1.0 )
+        split_points, split_rects = curve1.getSplittedPointsAndRectangulars(10)
 
-        s_segs = curve1.getStartSegments(0.1)
-        self.assertEqual( len(s_segs), 3 )
-
-        e_segs = curve1.getEndSegments(0.1)
-        self.assertEqual( len(e_segs), 3 )
+        print( split_points[0] )
+        print( split_rects[0] )
     #end
 
 #end
