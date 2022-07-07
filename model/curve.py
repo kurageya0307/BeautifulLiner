@@ -149,7 +149,7 @@ class LinearApproximateCurve(Curve):
                 max_y = p_seq.y
             #end if
         #end for
-        return Point(max_x, max_y)
+        return Point(max_x, max_y, evaluate=False)
     #end
 
     def min(self, start_index=0, end_index=None):
@@ -167,7 +167,7 @@ class LinearApproximateCurve(Curve):
                 min_y = p_seq.y
             #end if
         #end for
-        return Point(min_x, min_y)
+        return Point(min_x, min_y, evaluate=False)
     #end
 
     def getFullCurveRegionRect(self):

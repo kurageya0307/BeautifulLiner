@@ -14,11 +14,11 @@ class Rectangular:
 
     """
     def __init__(self, min_p, max_p):
-        self.__q = Point(min_p.x, min_p.y)
-        self.__p = Point(max_p.x, min_p.y)
-        self.__z = Point(min_p.x, max_p.y)
-        self.__m = Point(max_p.x, max_p.y)
-        self.__center = Point( (max_p.x + min_p.x)/2.0, (max_p.y + min_p.y)/2.0 )
+        self.__q = Point(min_p.x, min_p.y, evaluate=False)
+        self.__p = Point(max_p.x, min_p.y, evaluate=False)
+        self.__z = Point(min_p.x, max_p.y, evaluate=False)
+        self.__m = Point(max_p.x, max_p.y, evaluate=False)
+        self.__center = Point( (max_p.x + min_p.x)/2.0, (max_p.y + min_p.y)/2.0, evaluate=False)
 
         self.__width  = max_p.x - min_p.x
         self.__height = max_p.y - min_p.y

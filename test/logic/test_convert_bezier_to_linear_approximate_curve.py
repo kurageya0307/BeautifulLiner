@@ -48,7 +48,7 @@ class TestApproximateCurveWithLineSegments(unittest.TestCase):
 
     def testConvertBezierToLinearApproximateCurve(self):
         cubic_bezier_curve, space_index = readCubicBezierCurveFromSvgFile("data/aaa.svg")
-        linear_approximate_curve = convertBezierToLinearApproximateCurve(cubic_bezier_curve, 1.0, 10)
+        linear_approximate_curve = convertBezierToLinearApproximateCurve(cubic_bezier_curve, space_index, 1.0, 10)
 
         the_answers = ( 
                         (624.369000000000,665.275000000000),
