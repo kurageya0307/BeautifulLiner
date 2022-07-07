@@ -53,12 +53,12 @@ def getRemovedTipPoints(tip_targets, other_points_sets):
 #end
 def getRemovedTerminalPoints(terminal_targets, other_points_sets):
     terminal_index, terminal_point = getRemoveStartingIndexAndPoint(terminal_targets, other_points_sets)
-    #print(terminal_index)
 
     index_range_after_removed = [ 0, len(terminal_targets) ]
     if terminal_index is not None:
         index_range_after_removed[0] = terminal_index + 1
     #end if
+
 
     removed_points = []
     if terminal_point is not None:
@@ -81,12 +81,18 @@ def getPointIntersectionOfCurve(linear_approximate_curve, one_curve):
         for the_other_curve in curve_set_in_the_other_layer:
             if one_curve != the_other_curve:
                 #print(one_curve)
-                split_points, split_rects = the_other_curve.getSplittedPointsAndRectangulars()
-                for points, rect in zip(split_points, split_rects):
-                    if rect.testCollision(tip_rect):
-                        other_points_sets.append(points)
+                if len(the_other_curve) < 100:
+                    if tip_rect.testCollision( the_other_curve.getFullCurveRegionRect() ):
+                        other_points_sets.append( the_other_curve.points )
                     #end if
-                #end for
+                else:
+                    split_points, split_rects = the_other_curve.getSplittedPointsAndRectangulars()
+                    for points, rect in zip(split_points, split_rects):
+                        if rect.testCollision(tip_rect):
+                            other_points_sets.append(points)
+                        #end if
+                    #end for
+                #end if
             #end if
         #end for
     #end for
@@ -99,10 +105,16 @@ def getPointIntersectionOfCurve(linear_approximate_curve, one_curve):
         for the_other_curve in curve_set_in_the_other_layer:
             if one_curve != the_other_curve:
                 #print(one_curve)
-                split_points, split_rects = the_other_curve.getSplittedPointsAndRectangulars()
-                for points, rect in zip(split_points, split_rects):
-                    if rect.testCollision(terminal_rect):
-                        other_points_sets.append(points)
+                if len(the_other_curve) < 100:
+                    if terminal_rect.testCollision( the_other_curve.getFullCurveRegionRect() ):
+                        other_points_sets.append( the_other_curve.points )
+                    #end if
+                else:
+                    split_points, split_rects = the_other_curve.getSplittedPointsAndRectangulars()
+                    for points, rect in zip(split_points, split_rects):
+                        if rect.testCollision(terminal_rect):
+                            other_points_sets.append(points)
+                        #end if
                     #end if
                 #end if
             #end if
