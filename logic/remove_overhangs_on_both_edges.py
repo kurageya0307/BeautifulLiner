@@ -14,7 +14,6 @@ from curve_set_in_a_layer import CurveSetInALayer
 from all_layer_curve_set import AllLayerCurveSet
 
 RATIO = 0.5
-SPLIT_NUM = 10
 
 def getRemoveStartingIndexAndPoint(tip_or_terminal, other_points_sets):
     hoge = 0
@@ -82,7 +81,7 @@ def getPointIntersectionOfCurve(linear_approximate_curve, one_curve):
         for the_other_curve in curve_set_in_the_other_layer:
             if one_curve != the_other_curve:
                 #print(one_curve)
-                split_points, split_rects = the_other_curve.getSplittedPointsAndRectangulars(SPLIT_NUM)
+                split_points, split_rects = the_other_curve.getSplittedPointsAndRectangulars()
                 for points, rect in zip(split_points, split_rects):
                     if rect.testCollision(tip_rect):
                         other_points_sets.append(points)
@@ -100,7 +99,7 @@ def getPointIntersectionOfCurve(linear_approximate_curve, one_curve):
         for the_other_curve in curve_set_in_the_other_layer:
             if one_curve != the_other_curve:
                 #print(one_curve)
-                split_points, split_rects = the_other_curve.getSplittedPointsAndRectangulars(SPLIT_NUM)
+                split_points, split_rects = the_other_curve.getSplittedPointsAndRectangulars()
                 for points, rect in zip(split_points, split_rects):
                     if rect.testCollision(terminal_rect):
                         other_points_sets.append(points)
@@ -111,7 +110,7 @@ def getPointIntersectionOfCurve(linear_approximate_curve, one_curve):
     #end for
     removed_terminal_points = getRemovedTerminalPoints(  list( reversed(terminal_points) ), other_points_sets  )
 
-    middle_points = []#one_curve.getMiddlePoints(RATIO)
+    middle_points = one_curve.getMiddlePoints(RATIO)
 
     return removed_tip_points + middle_points + removed_terminal_points
 
@@ -121,18 +120,20 @@ def getPointIntersectionOfCurve(linear_approximate_curve, one_curve):
 def removeOverHangs(linear_approximate_curve):
     all_layer_removed_curves = AllLayerCurveSet()
     total_layer_num = len(linear_approximate_curve)
+    layer_index = 0
     for layer_name_one, curve_set_in_one_layer in linear_approximate_curve:
         removed_curve_set = CurveSetInALayer()
         total_curve_num_in_a_layer = len(curve_set_in_one_layer)
         for j, one_curve in enumerate(curve_set_in_one_layer):
             removed_curve = LinearApproximateCurve()
-            print("{}/{} in {} {}/{}\n".format(j, total_curve_num_in_a_layer, layer_name_one, 0, total_layer_num))
+            print("remove edge {}/{} in {} {}/{}".format(j+1, total_curve_num_in_a_layer, layer_name_one, layer_index+1, total_layer_num))
             for point in getPointIntersectionOfCurve(linear_approximate_curve, one_curve):
                 removed_curve.append( point )
             #end for
             removed_curve_set.append(removed_curve)
         #end for
         all_layer_removed_curves.append(layer_name_one, removed_curve_set)
+        layer_index += 1
     #end for
 
     return all_layer_removed_curves
