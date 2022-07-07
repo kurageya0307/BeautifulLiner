@@ -14,6 +14,8 @@ from all_layer_curve_set import AllLayerCurveSet
 import pprint as pp
 import re
 
+from pyqtree import Index
+
 # IN  nodeValue of d in path of svg as string
 # OUT CubicBezierCurve
 def makeCubicBezierCurve(d_str):
@@ -85,5 +87,10 @@ def readCubicBezierCurveFromSvgFile(file_name):
         cubic_bezier_curve.append(layer_name, makeCubicBezierCurveSet(paths) )
     #end for group_paths_set
 
-    return cubic_bezier_curve
+    view_box_str = svg.viewBoxString()
+    arr = view_box_str.split(" ")
+
+    space_index = Index(  bbox=( float(arr[0]), float(arr[1]), float(arr[2]), float(arr[3]) )  )
+
+    return cubic_bezier_curve, space_index
 #end def
