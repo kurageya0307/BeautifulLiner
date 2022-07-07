@@ -25,6 +25,11 @@ class SvgData:
         return tuple(return_tuple)
     #end
 
+    def viewBoxString(self):
+        root = self.__doc.getElementsByTagName("svg")
+        return root[0].attributes["viewBox"].value
+    #end 
+
     @property
     def doc(self):
         return self.__doc
