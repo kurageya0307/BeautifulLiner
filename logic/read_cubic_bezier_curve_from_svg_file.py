@@ -4,7 +4,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../model'))
 
 from svg_data import SvgData
-from point import Point
+from sympy.geometry import *
 from cubic_bezier_control_point import CubicBezierControlPoint
 from curve import CubicBezierCurve
 
