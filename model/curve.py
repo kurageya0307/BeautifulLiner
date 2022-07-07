@@ -123,6 +123,8 @@ class CubicBezierCurve(Curve):
 class LinearApproximateCurve(Curve):
     def __init__(self):
         self.__points = []
+        self.__split_points = []
+        self.__split_rects = []
     #end
 
     def append(self, point):
@@ -205,18 +207,19 @@ class LinearApproximateCurve(Curve):
     #end
 
 
-    def getSplittedPointsAndRectangulars(self, split_num):
-        split_points = []
-        split_rects = []
+    def calcSplittedPointsAndRectangulars(self, split_num):
         num_points = len( self.__points )
         percentage = math.floor( num_points / split_num )
         for i in range(split_num):
             start_index = i*percentage - 1 if i != 0 else 0
             end_index   = (i + 1)*percentage if i != (split_num-1) else num_points
-            split_points.append( self.__points[start_index:end_index] )
-            split_rects.append(  Rectangular( self.min(start_index, end_index), self.max(start_index, end_index) )  )
+            self.__split_points.append( self.__points[start_index:end_index] )
+            self.__split_rects.append(  Rectangular( self.min(start_index, end_index), self.max(start_index, end_index) )  )
         #end
-        return split_points, split_rects
+    #end
+
+    def getSplittedPointsAndRectangulars(self):
+        return self.__split_points, self.__split_rects
     #end
 
     @property

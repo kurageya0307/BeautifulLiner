@@ -126,10 +126,13 @@ class TestCurve(unittest.TestCase):
             curve1.append(  Point( float(i), float(i) )  )
         #end for
 
-        split_points, split_rects = curve1.getSplittedPointsAndRectangulars(10)
+        curve1.calcSplittedPointsAndRectangulars(10)
+        split_points, split_rects = curve1.getSplittedPointsAndRectangulars()
 
-        print( split_points[0] )
-        print( split_rects[0] )
+        for i in range(40):
+            self.assertEqual( split_points[0][i].x, i)
+        #print( split_points[0] )
+        #print( split_rects[0] )
     #end
 
 #end
