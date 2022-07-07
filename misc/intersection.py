@@ -71,8 +71,6 @@ def getRemovedPoints(target_points, other_points_sets, ratio):
     #end if
 
     return removed_points
-
-
 #end
 
 def main():
