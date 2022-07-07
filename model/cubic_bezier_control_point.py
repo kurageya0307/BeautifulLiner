@@ -89,10 +89,10 @@ class CubicBezierControlPoint:
         if not type(p3) is Point2D:
             raise ValueError("p3 must be Point2D")
 
-        self.__p0 = Point(p0.x, p0.y)
-        self.__p1 = Point(p1.x, p1.y)
-        self.__p2 = Point(p2.x, p2.y)
-        self.__p3 = Point(p3.x, p3.y)
+        self.__p0 = Point(p0.x, p0.y, evaluate=False)
+        self.__p1 = Point(p1.x, p1.y, evaluate=False)
+        self.__p2 = Point(p2.x, p2.y, evaluate=False)
+        self.__p3 = Point(p3.x, p3.y, evaluate=False)
     #end
 
     @property

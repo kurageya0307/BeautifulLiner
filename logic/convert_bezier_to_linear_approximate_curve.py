@@ -4,8 +4,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../model'))
 
 import math
-from point import Point
-from vector import Vector
+from sympy.geometry import *
 from cubic_bezier_control_point import CubicBezierControlPoint
 
 from curve import CubicBezierCurve
@@ -146,15 +145,27 @@ from all_layer_curve_set import AllLayerCurveSet
 # 4. If the division num of Q0, Q1 and Q2 Points is large enough, the resulting point sequence can approximate a cubic Bezier curve with sufficient accuracy.
 #
 
+def simpleDistanceCalc( point_a, point_b):
+    x_a = float(point_a.x)
+    y_a = float(point_a.y)
+    x_b = float(point_b.x)
+    y_b = float(point_b.y)
+
+    return math.sqrt( (x_b - x_a)*(x_b - x_a) + (y_b - y_a)*(y_b - y_a) )
+#end
 
 def getDivisionNum(ctrl_p, micro_segment_length):
-    vec_p0_p1 = Vector(ctrl_p.p0, ctrl_p.p1)
-    vec_p1_p2 = Vector(ctrl_p.p1, ctrl_p.p2)
-    vec_p2_p3 = Vector(ctrl_p.p2, ctrl_p.p3)
+    #vec_p0_p1 = Segment(ctrl_p.p0, ctrl_p.p1)
+    #vec_p1_p2 = Segment(ctrl_p.p1, ctrl_p.p2)
+    #vec_p2_p3 = Segment(ctrl_p.p2, ctrl_p.p3)
 
-    length_p0_p1 = vec_p0_p1.abs()
-    length_p1_p2 = vec_p1_p2.abs()
-    length_p2_p3 = vec_p2_p3.abs()
+    #length_p0_p1 = simpleDistanceCalc( ctrl_p.p0, ctrl_p.p1 )
+    #length_p1_p2 = simpleDistanceCalc( ctrl_p.p1, ctrl_p.p2 )
+    #length_p2_p3 = simpleDistanceCalc( ctrl_p.p2, ctrl_p.p3 )
+
+    length_p0_p1 = ctrl_p.p0.distance(ctrl_p.p1)
+    length_p1_p2 = ctrl_p.p1.distance(ctrl_p.p2)
+    length_p2_p3 = ctrl_p.p2.distance(ctrl_p.p3)
 
     division_num_p0_p1 = math.ceil(length_p0_p1 / micro_segment_length)
     division_num_p1_p2 = math.ceil(length_p1_p2 / micro_segment_length)
@@ -183,7 +194,7 @@ def getEquallyDividedPointsBetween2Points(point_a, point_b, division_num):
 
     return_points = []
     for i in range(division_num):
-        return_points.append(  Point( point_a.x + delta_x*float(i), point_a.y + delta_y*float(i) )  )
+        return_points.append(  Point( point_a.x + delta_x*float(i), point_a.y + delta_y*float(i), evaluate=False)  )
     #end
     return_points.append(point_b)
 
@@ -205,7 +216,7 @@ def getEquallyDividedPointsBetween2Points(point_a, point_b, division_num):
 def getInternalDivisionPoint(point_a, point_b, ratio_m, ratio_n):
     x = ( point_a.x*ratio_n + point_b.x*ratio_m ) / (ratio_m + ratio_n)
     y = ( point_a.y*ratio_n + point_b.y*ratio_m ) / (ratio_m + ratio_n)
-    return Point(x, y)
+    return Point(x, y, evaluate=False)
 #end def
 
 #    P1 ...........Q1........................................   P2
