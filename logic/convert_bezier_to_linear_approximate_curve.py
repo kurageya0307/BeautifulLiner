@@ -268,10 +268,14 @@ def getPointsFromOneCubicBezierCurveSegment(ctrl_p, micro_segment_length):
 def convertBezierToLinearApproximateCurve(cubic_bezier_curve, micro_segment_length, split_num):
     linear_approximate_curve = AllLayerCurveSet()
 
+    total_layer_num = len(cubic_bezier_curve)
+    layer_index = 0
     for layer_name, curve_set_in_a_layer in cubic_bezier_curve:
         linear_curve_set = CurveSetInALayer()
-        for curve in curve_set_in_a_layer:
+        total_curve_num_in_a_layer = len(curve_set_in_a_layer)
+        for j, curve in enumerate(curve_set_in_a_layer):
             linear_curve = LinearApproximateCurve() # linear_curve ??? umm....
+            print("convert linear approximate curve {}/{} in {} {}/{}".format(j+1, total_curve_num_in_a_layer, layer_name, layer_index+1, total_layer_num))
             for ctrl_p in curve:
                 for point in getPointsFromOneCubicBezierCurveSegment(ctrl_p, micro_segment_length):
                     linear_curve.append( point )
@@ -281,6 +285,7 @@ def convertBezierToLinearApproximateCurve(cubic_bezier_curve, micro_segment_leng
             linear_curve_set.append(linear_curve)
         #end for
         linear_approximate_curve.append(layer_name, linear_curve_set)
+        layer_index += 1
     #end for
 
     return linear_approximate_curve
