@@ -223,7 +223,7 @@ def getInternalDivisionPoint(point_a, point_b, ratio_m, ratio_n):
 #                P0                                                        
 #                     * = return_points
 #
-def getPointsFromOneCubicBezierCurveSegment(ctrl_p, micro_segment_length):
+def getPointsFromOneCubicBezierCurveSegment(ctrl_p, is_first, micro_segment_length):
     division_num = getDivisionNum(ctrl_p, micro_segment_length)
 
     q0_list = getEquallyDividedPointsBetween2Points(ctrl_p.p0, ctrl_p.p1, division_num)
@@ -232,10 +232,13 @@ def getPointsFromOneCubicBezierCurveSegment(ctrl_p, micro_segment_length):
 
     return_points = []
     if division_num == 1:
-        return_points.append( Point(ctrl_p.p0.x, ctrl_p.p0.y, evaluate=False) )
+        if is_first:
+            return_points.append( Point(ctrl_p.p0.x, ctrl_p.p0.y, evaluate=False) )
+        #end if
         return_points.append( Point(ctrl_p.p3.x, ctrl_p.p3.y, evaluate=False) )
     else:
-        for i in range(division_num+1):
+        start = 0 if is_first else 1
+        for i in range(start, division_num+1):
             q0 = q0_list[i]
             q1 = q1_list[i]
             q2 = q2_list[i]
@@ -264,8 +267,8 @@ def convertBezierToLinearApproximateCurve(cubic_bezier_curve, micro_segment_leng
         for j, curve in enumerate(curve_set_in_a_layer):
             linear_curve = LinearApproximateCurve() # linear_curve ??? umm....
             print("convert linear approximate curve {}/{} in {} {}/{}".format(j+1, total_curve_num_in_a_layer, layer_name, layer_index+1, total_layer_num))
-            for ctrl_p in curve:
-                for point in getPointsFromOneCubicBezierCurveSegment(ctrl_p, micro_segment_length):
+            for k, ctrl_p in enumerate(curve):
+                for point in getPointsFromOneCubicBezierCurveSegment(ctrl_p, k==0, micro_segment_length):
                     linear_curve.append( point )
                 #end for
             #end for
