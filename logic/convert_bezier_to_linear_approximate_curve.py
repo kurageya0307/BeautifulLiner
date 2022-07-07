@@ -145,24 +145,7 @@ from all_layer_curve_set import AllLayerCurveSet
 # 4. If the division num of Q0, Q1 and Q2 Points is large enough, the resulting point sequence can approximate a cubic Bezier curve with sufficient accuracy.
 #
 
-def simpleDistanceCalc( point_a, point_b):
-    x_a = float(point_a.x)
-    y_a = float(point_a.y)
-    x_b = float(point_b.x)
-    y_b = float(point_b.y)
-
-    return math.sqrt( (x_b - x_a)*(x_b - x_a) + (y_b - y_a)*(y_b - y_a) )
-#end
-
 def getDivisionNum(ctrl_p, micro_segment_length):
-    #vec_p0_p1 = Segment(ctrl_p.p0, ctrl_p.p1)
-    #vec_p1_p2 = Segment(ctrl_p.p1, ctrl_p.p2)
-    #vec_p2_p3 = Segment(ctrl_p.p2, ctrl_p.p3)
-
-    #length_p0_p1 = simpleDistanceCalc( ctrl_p.p0, ctrl_p.p1 )
-    #length_p1_p2 = simpleDistanceCalc( ctrl_p.p1, ctrl_p.p2 )
-    #length_p2_p3 = simpleDistanceCalc( ctrl_p.p2, ctrl_p.p3 )
-
     length_p0_p1 = ctrl_p.p0.distance(ctrl_p.p1)
     length_p1_p2 = ctrl_p.p1.distance(ctrl_p.p2)
     length_p2_p3 = ctrl_p.p2.distance(ctrl_p.p3)
@@ -248,19 +231,24 @@ def getPointsFromOneCubicBezierCurveSegment(ctrl_p, micro_segment_length):
     q2_list = getEquallyDividedPointsBetween2Points(ctrl_p.p2, ctrl_p.p3, division_num)
 
     return_points = []
-    for i in range(division_num):
-        q0 = q0_list[i]
-        q1 = q1_list[i]
-        q2 = q2_list[i]
+    if division_num == 1:
+        return_points.append( Point(ctrl_p.p0.x, ctrl_p.p0.y, evaluate=False) )
+        return_points.append( Point(ctrl_p.p3.x, ctrl_p.p3.y, evaluate=False) )
+    else:
+        for i in range(division_num+1):
+            q0 = q0_list[i]
+            q1 = q1_list[i]
+            q2 = q2_list[i]
 
-        ratio_n = float(i)
-        ratio_m = float(division_num - i)
+            ratio_n = float(i)
+            ratio_m = float(division_num - i)
 
-        r0 = getInternalDivisionPoint(q0, q1, ratio_n, ratio_m)
-        r1 = getInternalDivisionPoint(q1, q2, ratio_n, ratio_m)
+            r0 = getInternalDivisionPoint(q0, q1, ratio_n, ratio_m)
+            r1 = getInternalDivisionPoint(q1, q2, ratio_n, ratio_m)
 
-        return_points.append( getInternalDivisionPoint(r0, r1, ratio_n, ratio_m) )
-    #end for
+            return_points.append( getInternalDivisionPoint(r0, r1, ratio_n, ratio_m) )
+        #end for
+    #end if
 
     return return_points
 #end def
