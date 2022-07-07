@@ -101,6 +101,10 @@ class CurveSetInALayer:
         return self.__curves[index]
     #end
 
+    def __len__(self):
+        return len(self.__curves)
+    #end
+
     @property
     def curves(self):
         return self.__curves
