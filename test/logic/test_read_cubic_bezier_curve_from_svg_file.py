@@ -36,7 +36,7 @@ class TestCreateCubicBezierCurveSetGroup(unittest.TestCase):
     #end def testMakeCubicBezierCurve
 
     def testReadCubicBezierCurveFromSvgFile(self):
-        cubic_bezier_curve, space_index = readCubicBezierCurveFromSvgFile("data/aaa.svg")
+        cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/aaa.svg")
         the_answer_layer_name = ("senga1", "senga2")
         the_answer_ctrl_points_str = \
         (   "624.369,665.275\n624.369,665.275\n615.909,650.653\n610.912,630.454\n",
@@ -59,7 +59,7 @@ class TestCreateCubicBezierCurveSetGroup(unittest.TestCase):
             i += 1
         #end for
 
-        #print( space_index )
+        print( view_box_data )
     #end def testCreateCubicBezierCurveSetGroup
 
 #end

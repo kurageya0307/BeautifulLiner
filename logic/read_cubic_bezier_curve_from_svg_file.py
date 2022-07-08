@@ -89,8 +89,7 @@ def readCubicBezierCurveFromSvgFile(file_name):
 
     view_box_str = svg.viewBoxString()
     arr = view_box_str.split(" ")
+    view_box_data = ( float(arr[0]), float(arr[1]), float(arr[2]), float(arr[3]) )
 
-    space_index = Index(  bbox=( float(arr[0]), float(arr[1]), float(arr[2]), float(arr[3]) )  )
-
-    return cubic_bezier_curve, space_index
+    return cubic_bezier_curve, view_box_data
 #end def
