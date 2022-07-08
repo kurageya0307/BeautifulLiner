@@ -47,8 +47,8 @@ class TestApproximateCurveWithLineSegments(unittest.TestCase):
     #end def testGetInternalDivisionPoint
 
     def testConvertBezierToLinearApproximateCurve(self):
-        cubic_bezier_curve, space_index = readCubicBezierCurveFromSvgFile("data/aaa.svg")
-        linear_approximate_curve = convertBezierToLinearApproximateCurve(cubic_bezier_curve, space_index, 1.0, 10)
+        cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/aaa.svg")
+        linear_approximate_curve = convertBezierToLinearApproximateCurve(cubic_bezier_curve, 1.0, 10)
 
         the_answers = ( 
                         (624.369000000000,665.275000000000),
