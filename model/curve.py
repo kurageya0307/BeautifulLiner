@@ -222,6 +222,24 @@ class LinearApproximateCurve(Curve):
         return self.__split_points, self.__split_rects
     #end
 
+    def getSegment(self, index):
+        return Segment( self.__points[index], self.__points[index+1], evaluate=False)
+    #end
+
+    def getSegmentRectTuple(self, index):
+        x0 = self.__points[index].x
+        y0 = self.__points[index].y
+        x1 = self.__points[index+1].x
+        y1 = self.__points[index+1].y
+
+        min_x = x0 if x0 < x1 else x1
+        max_x = x0 if x0 > x1 else x1
+        min_y = y0 if y0 < y1 else y1
+        max_y = y0 if y0 > y1 else y1
+
+        return (min_x, min_y, max_x, max_y)
+    #end
+
     @property
     def points(self):
         return self.__points

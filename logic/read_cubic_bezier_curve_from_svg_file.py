@@ -14,7 +14,6 @@ from all_layer_curve_set import AllLayerCurveSet
 import pprint as pp
 import re
 
-from pyqtree import Index
 
 # IN  nodeValue of d in path of svg as string
 # OUT CubicBezierCurve
