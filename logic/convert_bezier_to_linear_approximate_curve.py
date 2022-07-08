@@ -272,15 +272,20 @@ def convertBezierToLinearApproximateCurve(cubic_bezier_curve, space_index, micro
                     linear_curve.append( point )
                 #end for
             #end for
-            rect = linear_curve.getFullCurveRegionRect()
-            space_index.insert( rect, (rect.q.x, rect.q.y, rect.m.x, rect.m.y) )
 
-            linear_curve.calcSplittedPointsAndRectangulars(split_num)
+
+            split_num_calc = math.ceil( len(linear_curve)/10 )
+            if split_num_calc > split_num:
+                split_num_calc = split_num
+            #end if
+
+            linear_curve.calcSplittedPointsAndRectangulars(split_num_calc)
+            
             split_points, split_rects = linear_curve.getSplittedPointsAndRectangulars()
-            for rect in split_rects:
-                space_index.insert( rect, (rect.q.x, rect.q.y, rect.m.x, rect.m.y) )
+            for points, rect in zip(split_points, split_rects):
+                space_index.insert( points, (rect.q.x, rect.q.y, rect.m.x, rect.m.y) )
+            #end for
 
-#            print(rect.q.x)
             linear_curve_set.append(linear_curve)
         #end for
         linear_approximate_curve.append(layer_name, linear_curve_set)
