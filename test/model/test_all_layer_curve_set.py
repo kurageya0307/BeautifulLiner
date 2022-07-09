@@ -8,7 +8,7 @@ from cubic_bezier_control_point import CubicBezierControlPoint
 from curve import CubicBezierCurve
 from curve import LinearApproximateCurve
 from curve_set_in_a_layer import CurveSetInALayer
-from all_layer_curve_set import AllLayerCurveSet
+from all_layer_curve_set import *
 import unittest
 
 class TestAllLayerCurveSet(unittest.TestCase):
@@ -32,7 +32,7 @@ class TestAllLayerCurveSet(unittest.TestCase):
         curve_set.append(curve)
         curve_set.append(curve)
 
-        all_curve_set = AllLayerCurveSet()
+        all_curve_set = AllLayerLinearApproximateCurveSet()
         all_curve_set.append("layer1", curve_set)
         all_curve_set.append("layer2", curve_set)
         all_curve_set.append("layer3", curve_set)
@@ -65,7 +65,7 @@ class TestAllLayerCurveSet(unittest.TestCase):
         curve_set.append(curve)
         curve_set.append(curve)
 
-        all_curve_set = AllLayerCurveSet()
+        all_curve_set = AllLayerLinearApproximateCurveSet()
         all_curve_set.append("layer1", curve_set)
         all_curve_set.append("layer2", curve_set)
         all_curve_set.append("layer3", curve_set)
@@ -81,6 +81,41 @@ class TestAllLayerCurveSet(unittest.TestCase):
             for curve in curve_set_in_a_layer:
                 for point in curve:
                     self.assertEqual(point.x, 0.0)
+                    break
+                #end for
+            #end for
+        #end for
+    #end
+
+    def test_broad_curve_set(self):
+        curve = LinearApproximateCurve()
+        curve.append(self.p0)
+        curve.append(self.p1)
+        curve.append(self.p2)
+        curve.append(self.p3)
+
+        curve_set = CurveSetInALayer()
+        curve_set.append(curve)
+        curve_set.append(curve)
+        curve_set.append(curve)
+
+        broad_all_curve_set = AllLayerBroadCurveSet()
+        broad_all_curve_set.append("layer1", curve_set, curve_set)
+        broad_all_curve_set.append("layer2", curve_set, curve_set)
+        broad_all_curve_set.append("layer3", curve_set, curve_set)
+        broad_all_curve_set.append("layer4", curve_set, curve_set)
+
+
+        for layer_name, going_curve_set, returning_curve_set in broad_all_curve_set:
+            for curve in going_curve_set:
+                for p in curve:
+                    self.assertEqual(p.x, 0.0)
+                    break
+                #end for
+            #end for
+            for curve in returning_curve_set:
+                for p in curve:
+                    self.assertEqual(p.x, 0.0)
                     break
                 #end for
             #end for
