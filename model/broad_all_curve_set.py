@@ -61,29 +61,30 @@ class BroadAllCurveSet:
             yield layer_name, going_curve_set, returning_curve_set
         #end for
     #end
-    ###def to_svg_str(self):
-    ###    s = ""
-    ###    #for group_id, curves in zip(self.__group_ids, self.__layered_curves):
-    ###    for group_id, going_curves, returning_curves in zip(self.__group_ids, self.__layered_going_curves, self.__layered_returning_curves):
-    ###        s += "<g id=\"{}\">\n".format(group_id)
-    ###        for going_curve, returning_curve in zip(going_curves, returning_curves):
-    ###            s += "<path fill=\"none\" stroke-width=\"1.0\" stroke=\"#000000\" d=\""
-    ###            is_first = True
-    ###            for point in going_curve.points:
-    ###                if is_first:
-    ###                    s += "M {:.3f} {:.3f} ".format(point.x, point.y)
-    ###                    is_first = False
-    ###                else:
-    ###                    s += "L {:.3f} {:.3f} ".format(point.x, point.y)
-    ###                #end if
-    ###            #end for
-    ###            for point in returning_curve.points:
-    ###                s += "L {:.3f} {:.3f} ".format(point.x, point.y)
-    ###            #end for
-    ###            s += "\"/>\n"
-    ###        #end for
-    ###        s += "</g>"
-    ###    #end for
-    ###    return s
-    ####end
+
+    def to_svg_str(self, color="#000000", shift=0.0):
+        s = ""
+        #for group_id, curves in zip(self.__group_ids, self.__layered_curves):
+        for layer_name, going_curves, returning_curves in zip(self.__layer_names, self.__going_curve_sets, self.__returning_curve_sets):
+            s += "<g id=\"{}\" vectornator:layerName=\"{}\">\n".format(layer_name, layer_name)
+            for going_curve, returning_curve in zip(going_curves, returning_curves):
+                s += "<path fill=\"none\" stroke-width=\"1.0\" stroke=\"" + color + "\" d=\""
+                is_first = True
+                for point in going_curve.points:
+                    if is_first:
+                        s += "M {:.3f} {:.3f} ".format(point.x, point.y)
+                        is_first = False
+                    else:
+                        s += "L {:.3f} {:.3f} ".format(point.x, point.y)
+                    #end if
+                #end for
+                for point in returning_curve.points:
+                    s += "L {:.3f} {:.3f} ".format(point.x, point.y)
+                #end for
+                s += "\"/>\n"
+            #end for
+            s += "</g>\n"
+        #end for
+        return s
+    #end
 #end
