@@ -14,10 +14,10 @@ import unittest
 
 class TestApproximateCurveWithLineSegments(unittest.TestCase):
     def testConvertBezierToLinearApproximateCurve(self):
-        #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/RemoveEdgeTest.svg")
+        cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/RemoveEdgeTest.svg")
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/NgData.svg")
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/KarinFace.svg")
-        cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/TaimaninKarin.svg")
+        #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/TaimaninKarin.svg")
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/HalfFace.svg")
         linear_approximate_curve = convertBezierToLinearApproximateCurve(cubic_bezier_curve, 1.0, 10)
         #writeSvg("fuga.svg", linear_approximate_curve, color="#ff0000", diff_str=diff)

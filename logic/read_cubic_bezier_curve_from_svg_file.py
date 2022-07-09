@@ -9,7 +9,7 @@ from cubic_bezier_control_point import CubicBezierControlPoint
 from curve import CubicBezierCurve
 
 from curve_set_in_a_layer import CurveSetInALayer
-from all_layer_curve_set import AllLayerCurveSet
+from all_layer_curve_set import AllLayerLinearApproximateCurveSet
 
 import pprint as pp
 import re
@@ -75,7 +75,7 @@ def readCubicBezierCurveFromSvgFile(file_name):
     IN  file_name as string
     OUT AllLayerCurveSet
     """
-    cubic_bezier_curve = AllLayerCurveSet()
+    cubic_bezier_curve = AllLayerLinearApproximateCurveSet()
     
     svg = SvgData(file_name)
     for group_paths_set in svg.get_group_paths_tuple():

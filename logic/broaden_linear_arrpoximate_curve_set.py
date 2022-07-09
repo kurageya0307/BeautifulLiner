@@ -12,8 +12,7 @@ from sympy.geometry import *
 
 from curve import LinearApproximateCurve
 from curve_set_in_a_layer import CurveSetInALayer
-from all_layer_curve_set import AllLayerCurveSet
-from broad_all_curve_set import BroadAllCurveSet
+from all_layer_curve_set import AllLayerBroadCurveSet
 
 from numba import jit
 
@@ -209,7 +208,7 @@ def makeSlightlyAwayReturningCurves(curves, max_delta):
 #end 
 
 def broadenLinearApproximateCurveSet(linear_approximate_curve, max_delta):
-    broad_curve = BroadAllCurveSet()
+    broad_curve = AllLayerBroadCurveSet()
     for layer_name, curve_set in linear_approximate_curve:
         broad_curve.append( layer_name, makeSlightlyAwayGoingCurves(curve_set, max_delta), makeSlightlyAwayReturningCurves(curve_set, max_delta) )
     #end for

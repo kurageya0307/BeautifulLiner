@@ -12,7 +12,7 @@ from sympy.geometry import *
 
 from curve import LinearApproximateCurve
 from curve_set_in_a_layer import CurveSetInALayer
-from all_layer_curve_set import AllLayerCurveSet
+from all_layer_curve_set import AllLayerLinearApproximateCurveSet
 
 from numba import jit
 
@@ -78,7 +78,7 @@ def getEdgeRemovedCurve(curve, segment_space):
 
 
 def removeOverHangs(linear_approximate_curve, segment_space):
-    all_layer_removed_curves = AllLayerCurveSet()
+    all_layer_removed_curves = AllLayerLinearApproximateCurveSet()
     total_layer_num = len(linear_approximate_curve)
     layer_index = 0
     for layer_name_one, curve_set_in_one_layer in linear_approximate_curve:

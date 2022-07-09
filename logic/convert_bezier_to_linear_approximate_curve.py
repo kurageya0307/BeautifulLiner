@@ -10,7 +10,7 @@ from cubic_bezier_control_point import CubicBezierControlPoint
 from curve import CubicBezierCurve
 from curve import LinearApproximateCurve
 from curve_set_in_a_layer import CurveSetInALayer
-from all_layer_curve_set import AllLayerCurveSet
+from all_layer_curve_set import AllLayerLinearApproximateCurveSet
 # 
 # The Algorithm
 #                                                                                                                                        
@@ -257,7 +257,7 @@ def getPointsFromOneCubicBezierCurveSegment(ctrl_p, is_first, micro_segment_leng
 #end def
 
 def convertBezierToLinearApproximateCurve(cubic_bezier_curve, micro_segment_length, split_num):
-    linear_approximate_curve = AllLayerCurveSet()
+    linear_approximate_curve = AllLayerLinearApproximateCurveSet()
 
     total_layer_num = len(cubic_bezier_curve)
     layer_index = 0

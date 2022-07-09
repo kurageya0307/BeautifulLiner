@@ -59,7 +59,7 @@ class TestCreateCubicBezierCurveSetGroup(unittest.TestCase):
             i += 1
         #end for
 
-        print( view_box_data )
+        #print( view_box_data )
     #end def testCreateCubicBezierCurveSetGroup
 
 #end
