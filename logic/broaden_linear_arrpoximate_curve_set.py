@@ -209,7 +209,7 @@ def broadenLinearApproximateCurveSet(linear_approximate_curve, max_delta):
         total_curve_num_in_a_layer = len(curve_set)
         for j, curve in enumerate(curve_set):
             print("broaden {}/{} in {} {}/{}".format(j+1, total_curve_num_in_a_layer, layer_name, layer_index+1, total_layer_num))
-            going_broad_curve_set_in_a_layer.append( getSlightlyAwayReturningCurve(curve, max_delta) )
+            going_broad_curve_set_in_a_layer.append( getSlightlyAwayGoingCurve(curve, max_delta) )
             returning_broad_curve_set_in_a_layer.append( getSlightlyAwayReturningCurve(curve, max_delta) )
         #end for
         broad_curve.append( layer_name, going_broad_curve_set_in_a_layer, returning_broad_curve_set_in_a_layer )
