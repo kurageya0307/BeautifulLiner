@@ -111,8 +111,8 @@ class CubicBezierCurve(Curve):
     #end
 
     @property
-    def control_point(self):
-        return self.__control_point
+    def control_points(self):
+        return self.__control_points
     #end
 
     def __getitem__(self, index):
