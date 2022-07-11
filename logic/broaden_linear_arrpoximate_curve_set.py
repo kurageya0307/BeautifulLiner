@@ -199,18 +199,20 @@ def makeSlightlyAwayGoingCurves(curves, max_delta):
     return return_curves
 #end 
 
-def makeSlightlyAwayReturningCurves(curves, max_delta):
-    return_curves = CurveSetInALayer()
-    for curve in curves:
-        return_curves.append( getSlightlyAwayReturningCurve(curve, max_delta) )
-    #end for
-    return return_curves
-#end 
-
 def broadenLinearApproximateCurveSet(linear_approximate_curve, max_delta):
     broad_curve = AllLayerBroadCurveSet()
+    total_layer_num = len(linear_approximate_curve)
+    layer_index = 0
     for layer_name, curve_set in linear_approximate_curve:
-        broad_curve.append( layer_name, makeSlightlyAwayGoingCurves(curve_set, max_delta), makeSlightlyAwayReturningCurves(curve_set, max_delta) )
+        going_broad_curve_set_in_a_layer = CurveSetInALayer()
+        returning_broad_curve_set_in_a_layer = CurveSetInALayer()
+        total_curve_num_in_a_layer = len(curve_set)
+        for j, curve in enumerate(curve_set):
+            print("broaden {}/{} in {} {}/{}".format(j+1, total_curve_num_in_a_layer, layer_name, layer_index+1, total_layer_num))
+            going_broad_curve_set_in_a_layer.append( getSlightlyAwayReturningCurve(curve, max_delta) )
+            returning_broad_curve_set_in_a_layer.append( getSlightlyAwayReturningCurve(curve, max_delta) )
+        #end for
+        broad_curve.append( layer_name, going_broad_curve_set_in_a_layer, returning_broad_curve_set_in_a_layer )
     #end for
     return broad_curve
 #end
