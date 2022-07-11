@@ -115,6 +115,13 @@ class CubicBezierControlPoint:
         return self.__p3
     #end def
 
+    def __iter__(self):
+        yield self.__p0
+        yield self.__p1
+        yield self.__p2
+        yield self.__p3
+    #end 
+
     def pointToStr(self, p:Point):
         s = ""
         s += "{:.3f},{:.3f}".format( float(p.x), float(p.y) )

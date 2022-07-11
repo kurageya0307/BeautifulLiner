@@ -180,7 +180,6 @@ class AllLayerBroadCurveSet(AllLayerCurveSet):
         return len(self.__layer_names)
     #end
 
-    @property
     def to_svg_str(self, color="#000000", shift=0.0):
         s = ""
         #for group_id, curves in zip(self.__group_ids, self.__layered_curves):
@@ -201,6 +200,71 @@ class AllLayerBroadCurveSet(AllLayerCurveSet):
                     s += "L {:.3f} {:.3f} ".format(point.x, point.y)
                 #end for
                 s += "\"/>\n"
+            #end for
+            s += "</g>\n"
+        #end for
+        return s
+    #end
+#end
+
+class AllLayerBroadCubicBezierCurveSet(AllLayerCurveSet):
+    def __init__(self):
+        self.__layer_names = []
+        self.__going_curve_sets = []
+        self.__returning_curve_sets = []
+    #end
+
+    def append(self, layer_name : str, going_curve_set : CurveSetInALayer, returning_curve_set : CurveSetInALayer):
+        if type(layer_name) is not str:
+            raise ValueError("appending layer_name must be str")
+        #end if
+        if type(going_curve_set) is not CurveSetInALayer:
+            raise ValueError("appending going_curve_set must be CurveSetInALayer")
+        #end if
+        if type(returning_curve_set) is not CurveSetInALayer:
+            raise ValueError("appending returning_curve_set must be CurveSetInALayer")
+        #end if
+        self.__layer_names.append(layer_name)
+        self.__going_curve_sets.append(going_curve_set)
+        self.__returning_curve_sets.append(returning_curve_set)
+    #end
+
+    def __iter__(self):
+        for layer_name, going_curve_set, returning_curve_set in zip(self.__layer_names, self.__going_curve_sets, self.__returning_curve_sets):
+            yield layer_name, going_curve_set, returning_curve_set
+        #end for
+    #end
+
+    def __len__(self):
+        return len(self.__layer_names)
+    #end
+
+    def to_svg_str(self, color="#000000", shift=0.0):
+        s = ""
+        #for group_id, curves in zip(self.__group_ids, self.__layered_curves):
+        for layer_name, going_curves, returning_curves in zip(self.__layer_names, self.__going_curve_sets, self.__returning_curve_sets):
+            s += "<g id=\"{}\" vectornator:layerName=\"{}\">\n".format(layer_name, layer_name)
+            for going_curve, returning_curve in zip(going_curves, returning_curves):
+                s += "<path fill=\"" + color + "\" stroke=\"none\" d=\""
+                is_first = True
+                for ctrl_p in going_curve.control_points:
+                    if is_first:
+                        s += "M {:.3f} {:.3f} ".format(ctrl_p.p0.x + shift, ctrl_p.p0.y)
+                        s += "C {:.3f} {:.3f} ".format(ctrl_p.p1.x + shift, ctrl_p.p1.y)
+                        s += " {:.3f} {:.3f} ".format(ctrl_p.p2.x + shift, ctrl_p.p2.y)
+                        s += " {:.3f} {:.3f} ".format(ctrl_p.p3.x + shift, ctrl_p.p3.y)
+                    else:
+                        s += "C {:.3f} {:.3f} ".format(ctrl_p.p1.x + shift, ctrl_p.p1.y)
+                        s += " {:.3f} {:.3f} ".format(ctrl_p.p2.x + shift, ctrl_p.p2.y)
+                        s += " {:.3f} {:.3f} ".format(ctrl_p.p3.x + shift, ctrl_p.p3.y)
+                    #end for
+                #end for
+                for ctrl_p in returning_curve.control_points:
+                    s += "C {:.3f} {:.3f} ".format(ctrl_p.p1.x + shift, ctrl_p.p1.y)
+                    s += " {:.3f} {:.3f} ".format(ctrl_p.p2.x + shift, ctrl_p.p2.y)
+                    s += " {:.3f} {:.3f} ".format(ctrl_p.p3.x + shift, ctrl_p.p3.y)
+                #end for
+                s += " Z \"/>\n"
             #end for
             s += "</g>\n"
         #end for
