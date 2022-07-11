@@ -2,7 +2,7 @@ import os
 import sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../logic'))
-from remove_overhangs_on_both_edges import *
+from delete_overhangs_on_both_edges import *
 from make_segment_space import makeSegmentSpace
 from convert_bezier_to_linear_approximate_curve import convertBezierToLinearApproximateCurve
 from read_cubic_bezier_curve_from_svg_file import readCubicBezierCurveFromSvgFile
@@ -26,9 +26,9 @@ class TestApproximateCurveWithLineSegments(unittest.TestCase):
 
         diff_str = linear_approximate_curve.to_svg_str(color="#ff0000")
 
-        all_layer_removed_curves = removeOverHangs(linear_approximate_curve, segment_space)
-        writeSvg("hoge.svg", all_layer_removed_curves, color="#008800", shift=0.0, diff_str=diff_str)
-#        print( all_layer_removed_curves.to_svg_str() )
+        all_layer_deleted_curves = deleteOverHangs(linear_approximate_curve, segment_space)
+        writeSvg("hoge.svg", all_layer_deleted_curves, color="#008800", shift=0.0, diff_str=diff_str)
+#        print( all_layer_deleted_curves.to_svg_str() )
     #end
 #end
 

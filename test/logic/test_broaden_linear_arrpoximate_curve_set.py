@@ -3,11 +3,10 @@ import os
 import sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../model'))
-from broad_all_curve_set import BroadAllCurveSet
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../logic'))
 from broaden_linear_arrpoximate_curve_set import *
-from remove_overhangs_on_both_edges import removeOverHangs
+from delete_overhangs_on_both_edges import deleteOverHangs
 from make_segment_space import makeSegmentSpace
 from convert_bezier_to_linear_approximate_curve import convertBezierToLinearApproximateCurve
 from read_cubic_bezier_curve_from_svg_file import readCubicBezierCurveFromSvgFile
@@ -86,7 +85,7 @@ class TestApproximateCurveWithLineSegments(unittest.TestCase):
 
         diff_str = linear_approximate_curve.to_svg_str(color="#ff0000")
 
-        all_layer_removed_curves = removeOverHangs(linear_approximate_curve, segment_space)
+        all_layer_removed_curves = deleteOverHangs(linear_approximate_curve, segment_space)
 
         broad_curve = broadenLinearApproximateCurveSet(all_layer_removed_curves, 2.0)
 

@@ -20,8 +20,8 @@ RATIO = 0.5
 
 from pyqtree import Index
 
-def getEdgeRemovedCurve(curve, segment_space):
-    removed_curve = LinearApproximateCurve()
+def getEdgedeletedCurve(curve, segment_space):
+    deleted_curve = LinearApproximateCurve()
 
     intersect_points = []
     intersect_indexes = []
@@ -59,39 +59,39 @@ def getEdgeRemovedCurve(curve, segment_space):
 
         if dist_start_intersect < dist_end_intersect:
             for i in range( intersect_indexes[0], len(curve) ):
-                removed_curve.append( curve[i] )
+                deleted_curve.append( curve[i] )
             #end for
-            return removed_curve
+            return deleted_curve
         else:
             for i in range(intersect_indexes[0]+1):
-                removed_curve.append( curve[i] )
+                deleted_curve.append( curve[i] )
             #end for
-            return removed_curve
+            return deleted_curve
         #end if
     else:
         for i in range( intersect_indexes[0], intersect_indexes[-1]+1 ):
-            removed_curve.append( curve[i] )
+            deleted_curve.append( curve[i] )
         #end for
-        return removed_curve
+        return deleted_curve
     #end if
 #end
 
 
-def removeOverHangs(linear_approximate_curve, segment_space):
-    all_layer_removed_curves = AllLayerLinearApproximateCurveSet()
+def deleteOverHangs(linear_approximate_curve, segment_space):
+    all_layer_deleted_curves = AllLayerLinearApproximateCurveSet()
     total_layer_num = len(linear_approximate_curve)
     layer_index = 0
     for layer_name_one, curve_set_in_one_layer in linear_approximate_curve:
-        removed_curve_set = CurveSetInALayer()
+        deleted_curve_set = CurveSetInALayer()
         total_curve_num_in_a_layer = len(curve_set_in_one_layer)
         for j, curve in enumerate(curve_set_in_one_layer):
-            print("remove edge {}/{} in {} {}/{}".format(j+1, total_curve_num_in_a_layer, layer_name_one, layer_index+1, total_layer_num))
-            removed_curve = getEdgeRemovedCurve(curve, segment_space)
-            removed_curve_set.append(removed_curve)
+            print("delete edge {}/{} in {} {}/{}".format(j+1, total_curve_num_in_a_layer, layer_name_one, layer_index+1, total_layer_num))
+            deleted_curve = getEdgedeletedCurve(curve, segment_space)
+            deleted_curve_set.append(deleted_curve)
         #end for
-        all_layer_removed_curves.append(layer_name_one, removed_curve_set)
+        all_layer_deleted_curves.append(layer_name_one, deleted_curve_set)
         layer_index += 1
     #end for
 
-    return all_layer_removed_curves
+    return all_layer_deleted_curves
 #end
