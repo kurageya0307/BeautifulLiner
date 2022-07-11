@@ -22,11 +22,12 @@ class TestFinalizeBroadCurve(unittest.TestCase):
     def testCreateBroadLinearApproximateCurveSet(self):
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/RemoveEdgeTest.svg")
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/NgData.svg")
-        cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/KarinFace.svg")
-        #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/TaimaninKarin.svg")
+        #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/KarinFace.svg")
+        cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/TaimaninKarin.svg")
+        #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/ZeroDivCheck.svg")
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/HalfFace.svg")
         linear_approximate_curve = convertBezierToLinearApproximateCurve(cubic_bezier_curve, 1.0, 10)
-        diff_str = linear_approximate_curve.to_svg_str(color="#ff0000")
+        diff_str = linear_approximate_curve.to_svg_str(color="#ff0000", shift=0.0)
 
         segment_space = makeSegmentSpace(linear_approximate_curve, view_box_data)
         all_layer_deleted_curves = deleteOverHangs(linear_approximate_curve, segment_space)
@@ -36,7 +37,7 @@ class TestFinalizeBroadCurve(unittest.TestCase):
 
         final_curve = finalizeBroadCubicBezierCurve(broad_curve)
 
-        writeSvg("hoge.svg", final_curve, color="#008800", shift=300.0, diff_str=diff_str)
+        writeSvg("hoge.svg", final_curve, color="#008800", shift=1000.0, diff_str=diff_str)
         #print( all_layer_deleted_curves.to_svg_str() )
     #end
 #end

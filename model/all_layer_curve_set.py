@@ -253,6 +253,7 @@ class AllLayerBroadCubicBezierCurveSet(AllLayerCurveSet):
                         s += "C {:.3f} {:.3f} ".format(ctrl_p.p1.x + shift, ctrl_p.p1.y)
                         s += " {:.3f} {:.3f} ".format(ctrl_p.p2.x + shift, ctrl_p.p2.y)
                         s += " {:.3f} {:.3f} ".format(ctrl_p.p3.x + shift, ctrl_p.p3.y)
+                        is_first = False
                     else:
                         s += "C {:.3f} {:.3f} ".format(ctrl_p.p1.x + shift, ctrl_p.p1.y)
                         s += " {:.3f} {:.3f} ".format(ctrl_p.p2.x + shift, ctrl_p.p2.y)
