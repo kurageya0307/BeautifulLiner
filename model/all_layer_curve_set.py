@@ -176,6 +176,11 @@ class AllLayerBroadCurveSet(AllLayerCurveSet):
         #end for
     #end
 
+    def __len__(self):
+        return len(self.__layer_names)
+    #end
+
+    @property
     def to_svg_str(self, color="#000000", shift=0.0):
         s = ""
         #for group_id, curves in zip(self.__group_ids, self.__layered_curves):
