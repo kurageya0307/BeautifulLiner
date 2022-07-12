@@ -25,15 +25,16 @@ class TestFinalizeBroadCurve(unittest.TestCase):
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/KarinFace.svg")
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/TaimaninKarin.svg")
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/Ayaka1.svg")
-        #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/Hotaru1.svg")
-        cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/Hoge.svg")
+        cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/Hotaru1.svg")
+        #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/B.svg")
+        #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/Hoge.svg")
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/ZeroDivCheck.svg")
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/HalfFace.svg")
         linear_approximate_curve = convertBezierToLinearApproximateCurve(cubic_bezier_curve, 1.0, 10)
         diff_str = linear_approximate_curve.to_svg_str(color="#ff0000", shift=0.0)
 
         segment_space = makeSegmentSpace(linear_approximate_curve, view_box_data)
-        all_layer_deleted_curves = deleteOverHangs(linear_approximate_curve, segment_space, 0.25)
+        all_layer_deleted_curves = deleteOverHangs(linear_approximate_curve, segment_space, 0.1)
         broad_curve = broadenLinearApproximateCurveSet(all_layer_deleted_curves, 1.0)
 
         #diff_str += broad_curve.to_svg_str(color="#0000ff")
@@ -44,15 +45,6 @@ class TestFinalizeBroadCurve(unittest.TestCase):
         #print( all_layer_deleted_curves.to_svg_str() )
     #end
 #end
-
-if __name__ == '__main__':
-    unittest.main()
-#end
-
-
-
-
-#end class
 
 if __name__ == '__main__':
     unittest.main()

@@ -50,11 +50,17 @@ def getBezierParameters(curve):
 
     x = []
     y = []
-    for point in curve:
-        x.append(point.x)
-        y.append(point.y)
+    for i in range( curve.start_index, curve.end_index ):
+        point = curve[i]
+        x.append( float( point.x ) )
+        y.append( float( point.y ) )
     #end for
 
+    if len(x)==1:
+        point = curve[ curve.end_index]
+        x.append( float( point.x ) )
+        y.append( float( point.y ) )
+    #end if
     if len(x) < degree + 1:
         x.insert(1, (x[0] + x[1])/2.0 )
         y.insert(1, (y[0] + y[1])/2.0 )
@@ -91,7 +97,8 @@ def getBezierParameters(curve):
 def getComplexCurveCubicBezierPoints(curve):
     x = []
     y = []
-    for point in curve:
+    for i in range( curve.start_index, curve.end_index ):
+        point = curve[i]
         x.append( float( point.x ) )
         y.append( float( point.y ) )
     #end for
@@ -159,6 +166,7 @@ def finalizeBroadCubicBezierCurve(broad_curve):
         final_returning_curve_set = CurveSetInALayer()
         for going_curve, returning_curve in zip(going_curve_set, returning_curve_set):
             print("finalize {}/{} in {} {}/{}".format(curve_index+1, total_curve_num_in_a_layer, layer_name, layer_index+1, total_layer_num))
+
             if isSimple(going_curve):
                 final_going_curve = CubicBezierCurve()
                 final_going_curve.append( getBezierParameters(going_curve) )

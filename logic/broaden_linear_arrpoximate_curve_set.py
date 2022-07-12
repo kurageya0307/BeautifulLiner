@@ -159,6 +159,9 @@ def getSlightlyAwayGoingCurve(curve, max_delta):
     # last point is equal to original last point
     the_curve.append( points[-1] )
 
+    the_curve.setStartIndex( curve.start_index )
+    the_curve.setEndIndex( curve.end_index )
+
     return the_curve
 #end 
 
@@ -188,15 +191,10 @@ def getSlightlyAwayReturningCurve(curve, max_delta):
     # last point is equal to original last point
     the_curve.append( reversed_points[-1] )
 
-    return the_curve
-#end 
+    the_curve.setStartIndex( len(curve) - curve.end_index )
+    the_curve.setEndIndex( len(curve) - curve.start_index )
 
-def makeSlightlyAwayGoingCurves(curves, max_delta):
-    return_curves = CurveSetInALayer()
-    for curve in curves:
-        return_curves.append( getSlightlyAwayGoingCurve(curve, max_delta) )
-    #end for
-    return return_curves
+    return the_curve
 #end 
 
 def broadenLinearApproximateCurveSet(linear_approximate_curve, max_delta):

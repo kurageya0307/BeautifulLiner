@@ -125,6 +125,9 @@ class LinearApproximateCurve(Curve):
         self.__points = []
         self.__split_points = []
         self.__split_rects = []
+
+        self.__start_index = 0
+        self.__end_index = -1
     #end
 
     def append(self, point):
@@ -238,6 +241,22 @@ class LinearApproximateCurve(Curve):
         max_y = y0 if y0 > y1 else y1
 
         return (min_x, min_y, max_x, max_y)
+    #end
+
+    def setStartIndex(self, index):
+        self.__start_index = index
+    #end
+    @property
+    def start_index(self):
+        return self.__start_index
+    #end
+
+    def setEndIndex(self, index):
+        self.__end_index = index
+    #end
+    @property
+    def end_index(self):
+        return self.__end_index
     #end
 
     @property

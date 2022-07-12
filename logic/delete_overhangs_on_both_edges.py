@@ -22,6 +22,9 @@ from pyqtree import Index
 
 def getEdgeDeletedCurve(curve, segment_space, ratio):
     deleted_curve = LinearApproximateCurve()
+    for p in curve:
+        deleted_curve.append(p)
+    #end for
 
     intersect_points = []
     intersect_indexes = []
@@ -46,7 +49,9 @@ def getEdgeDeletedCurve(curve, segment_space, ratio):
     #end
 
     if len(intersect_points) == 0:
-        return curve
+        deleted_curve.setStartIndex(0)
+        deleted_curve.setEndIndex( len(deleted_curve) )
+        return deleted_curve
     elif len(intersect_points) == 1:
         dist_start_intersect = curve[0].distance(intersect_points[0])
         dist_end_intersect   = curve[-1].distance(intersect_points[0])
@@ -58,14 +63,12 @@ def getEdgeDeletedCurve(curve, segment_space, ratio):
         #not work ummm...
 
         if dist_start_intersect < dist_end_intersect:
-            for i in range( intersect_indexes[0], len(curve) ):
-                deleted_curve.append( curve[i] )
-            #end for
+            deleted_curve.setStartIndex( intersect_indexes[0] )
+            deleted_curve.setEndIndex( len(deleted_curve) )
             return deleted_curve
         else:
-            for i in range(intersect_indexes[0]+1):
-                deleted_curve.append( curve[i] )
-            #end for
+            deleted_curve.setStartIndex( 0 )
+            deleted_curve.setEndIndex( intersect_indexes[0] )
             return deleted_curve
         #end if
     else:
@@ -79,9 +82,8 @@ def getEdgeDeletedCurve(curve, segment_space, ratio):
         if ( (total_point_num - intersect_indexes[-1])/total_point_num ) < ratio:
             end_index = intersect_indexes[-1] + 1
         #end if
-        for i in range( start_index, end_index ):
-            deleted_curve.append( curve[i] )
-        #end for
+        deleted_curve.setStartIndex( start_index )
+        deleted_curve.setEndIndex( end_index )
         return deleted_curve
     #end if
 #end
