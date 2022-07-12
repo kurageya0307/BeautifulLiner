@@ -30,7 +30,7 @@ class TestFinalizeBroadCurve(unittest.TestCase):
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/Hoge.svg")
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/ZeroDivCheck.svg")
         #cubic_bezier_curve, view_box_data = readCubicBezierCurveFromSvgFile("data/HalfFace.svg")
-        linear_approximate_curve = convertBezierToLinearApproximateCurve(cubic_bezier_curve, 1.0, 10)
+        linear_approximate_curve = convertBezierToLinearApproximateCurve(cubic_bezier_curve, 1.0)
         diff_str = linear_approximate_curve.to_svg_str(color="#ff0000", shift=0.0)
 
         segment_space = makeSegmentSpace(linear_approximate_curve, view_box_data)

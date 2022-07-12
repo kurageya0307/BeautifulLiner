@@ -256,7 +256,7 @@ def getPointsFromOneCubicBezierCurveSegment(ctrl_p, is_first, micro_segment_leng
     return return_points
 #end def
 
-def convertBezierToLinearApproximateCurve(cubic_bezier_curve, micro_segment_length, split_num):
+def convertBezierToLinearApproximateCurve(cubic_bezier_curve, micro_segment_length):
     linear_approximate_curve = AllLayerLinearApproximateCurveSet()
 
     total_layer_num = len(cubic_bezier_curve)
@@ -273,12 +273,6 @@ def convertBezierToLinearApproximateCurve(cubic_bezier_curve, micro_segment_leng
                 #end for
             #end for
 
-
-            split_num_calc = math.ceil( len(linear_curve)/10 )
-            if split_num_calc > split_num:
-                split_num_calc = split_num
-            #end if
-            linear_curve.calcSplittedPointsAndRectangulars(split_num_calc)
             linear_curve_set.append(linear_curve)
         #end for
         linear_approximate_curve.append(layer_name, linear_curve_set)
