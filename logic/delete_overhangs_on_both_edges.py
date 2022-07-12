@@ -20,7 +20,7 @@ RATIO = 0.5
 
 from pyqtree import Index
 
-def getEdgedeletedCurve(curve, segment_space):
+def getEdgeDeletedCurve(curve, segment_space, ratio):
     deleted_curve = LinearApproximateCurve()
 
     intersect_points = []
@@ -69,7 +69,17 @@ def getEdgedeletedCurve(curve, segment_space):
             return deleted_curve
         #end if
     else:
-        for i in range( intersect_indexes[0], intersect_indexes[-1]+1 ):
+        start_index = 0
+        end_index = len(curve)
+        total_point_num = len(curve)
+
+        if (intersect_indexes[0]/total_point_num) < ratio:
+            start_index = intersect_indexes[0]
+        #end if
+        if ( (total_point_num - intersect_indexes[-1])/total_point_num ) < ratio:
+            end_index = intersect_indexes[-1] + 1
+        #end if
+        for i in range( start_index, end_index ):
             deleted_curve.append( curve[i] )
         #end for
         return deleted_curve
@@ -77,7 +87,7 @@ def getEdgedeletedCurve(curve, segment_space):
 #end
 
 
-def deleteOverHangs(linear_approximate_curve, segment_space):
+def deleteOverHangs(linear_approximate_curve, segment_space, ratio):
     all_layer_deleted_curves = AllLayerLinearApproximateCurveSet()
     total_layer_num = len(linear_approximate_curve)
     layer_index = 0
@@ -86,7 +96,7 @@ def deleteOverHangs(linear_approximate_curve, segment_space):
         total_curve_num_in_a_layer = len(curve_set_in_one_layer)
         for j, curve in enumerate(curve_set_in_one_layer):
             print("delete edge {}/{} in {} {}/{}".format(j+1, total_curve_num_in_a_layer, layer_name_one, layer_index+1, total_layer_num))
-            deleted_curve = getEdgedeletedCurve(curve, segment_space)
+            deleted_curve = getEdgeDeletedCurve(curve, segment_space, ratio)
             deleted_curve_set.append(deleted_curve)
         #end for
         all_layer_deleted_curves.append(layer_name_one, deleted_curve_set)

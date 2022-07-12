@@ -82,6 +82,10 @@ def readCubicBezierCurveFromSvgFile(file_name):
         group = group_paths_set[0]
         paths = group_paths_set[1]
         layer_name = group.getAttributeNode('id').nodeValue
+
+        if re.match("xxx", layer_name):
+            print("skip layer {}".format(layer_name))
+            continue
         print("read layer {}".format(layer_name))
         cubic_bezier_curve.append(layer_name, makeCubicBezierCurveSet(paths) )
     #end for group_paths_set
