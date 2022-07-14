@@ -272,3 +272,59 @@ class AllLayerBroadCubicBezierCurveSet(AllLayerCurveSet):
         return s
     #end
 #end
+
+class AllLayerCubicBezierCurveSet(AllLayerCurveSet):
+    def __init__(self):
+        self.__layer_names = []
+        self.__curve_set = []
+    #end
+
+    def append(self, layer_name : str, curve_set : CurveSetInALayer):
+        if type(layer_name) is not str:
+            raise ValueError("appending layer_name must be str")
+        #end if
+        if type(curve_set) is not CurveSetInALayer:
+            raise ValueError("appending curve_set must be CurveSetInALayer")
+        #end if
+        self.__layer_names.append(layer_name)
+        self.__curve_set.append(curve_set)
+    #end
+
+    def __iter__(self):
+        for layer_name, curve_set in zip(self.__layer_names, self.__curve_set):
+            yield layer_name, curve_set
+        #end for
+    #end
+
+    def __len__(self):
+        return len(self.__layer_names)
+    #end
+
+    def to_svg_str(self, color="#000000", shift=1.0):
+        s = ""
+        #for group_id, curves in zip(self.__group_ids, self.__layered_curves):
+        for layer_name, curve_set in zip(self.__layer_names, self.__curve_set):
+            s += "<g id=\"{}\" vectornator:layerName=\"{}\" inkscape:groupmode=\"layer\" inkscape:label=\"{}\"\n".format(layer_name, layer_name, layer_name)
+            for curve in curve_set:
+                s += "<path fill=\"none\" stroke=\"" + color + "\" d=\""
+                is_first = True
+                for ctrl_p in curve.control_points:
+                    if is_first:
+                        s += "M {:.3f} {:.3f} ".format(float( ctrl_p.p0.x + shift ), float( ctrl_p.p0.y) )
+                        s += "C {:.3f} {:.3f} ".format(float( ctrl_p.p1.x + shift ), float( ctrl_p.p1.y) )
+                        s += " {:.3f} {:.3f} ".format( float( ctrl_p.p2.x + shift ), float( ctrl_p.p2.y) )
+                        s += " {:.3f} {:.3f} ".format( float( ctrl_p.p3.x + shift ), float( ctrl_p.p3.y) )
+                        is_first = False                                                                 
+                    else:                                                                                
+                        s += "C {:.3f} {:.3f} ".format(float( ctrl_p.p1.x + shift ), float( ctrl_p.p1.y) )
+                        s += " {:.3f} {:.3f} ".format( float( ctrl_p.p2.x + shift ), float( ctrl_p.p2.y) )
+                        s += " {:.3f} {:.3f} ".format( float( ctrl_p.p3.x + shift ), float( ctrl_p.p3.y) )
+                    #end for
+                #end for
+                s += " \"/>\n"
+            #end for
+            s += "</g>\n"
+        #end for
+        return s
+    #end
+#end

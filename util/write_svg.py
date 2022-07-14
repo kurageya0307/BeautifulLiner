@@ -1,4 +1,4 @@
-def writeSvg(file_name, all_layer_curve_set, color="#000000", shift=0.0, diff_str=""):
+def testWriteSvg(file_name, all_layer_curve_set, color="#000000", shift=0.0, diff_str=""):
     s = ""
 
     s += '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' + "\n"
@@ -10,6 +10,19 @@ def writeSvg(file_name, all_layer_curve_set, color="#000000", shift=0.0, diff_st
     s += all_layer_curve_set.to_svg_str(color=color, shift=shift)
     s += "</svg>"
     with open(file_name, "w") as output:
+        output.write(s) 
+    #end with
+#end
+
+def writeSvg(original_file_name, all_layer_curve_set):
+
+    s = ""
+
+    whole_text = open(original_file_name, 'r').read()
+
+    s += whole_text.replace("</svg>", all_layer_curve_set.to_svg_str(color="#ff0000", shift=0.0))
+    s += "</svg>"
+    with open(original_file_name.replace(".svg", "_BeauL.svg"), "w") as output:
         output.write(s) 
     #end with
 #end

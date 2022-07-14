@@ -33,6 +33,10 @@ def getEdgeDeletedCurve(curve, segment_space, ratio):
         the_segment_rect = curve.getSegmentRectTuple(i)
         other_segments = segment_space.intersect(the_segment_rect)
         for other_segment in other_segments:
+            if type(the_segment) == Point2D:
+                continue
+            if type(other_segment) == Point2D:
+                continue
             if the_segment == other_segment:
                 continue
             if (the_segment.p1==other_segment.p2):

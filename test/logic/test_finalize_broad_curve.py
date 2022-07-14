@@ -41,7 +41,7 @@ class TestFinalizeBroadCurve(unittest.TestCase):
 
         final_curve = finalizeBroadCubicBezierCurve(broad_curve)
 
-        writeSvg("hoge.svg", final_curve, color="#008800", shift=1000.0, diff_str=diff_str)
+        testWriteSvg("hoge.svg", final_curve, color="#008800", shift=1000.0, diff_str=diff_str)
         #print( all_layer_deleted_curves.to_svg_str() )
     #end
 #end
