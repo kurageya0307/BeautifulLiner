@@ -243,21 +243,21 @@ class AllLayerBroadCubicBezierCurveSet(AllLayerCurveSet):
         s = ""
         #for group_id, curves in zip(self.__group_ids, self.__layered_curves):
         for layer_name, going_curves, returning_curves in zip(self.__layer_names, self.__going_curve_sets, self.__returning_curve_sets):
-            s += "<g id=\"{}\" vectornator:layerName=\"{}\">\n".format(layer_name, layer_name)
+            s += "<g id=\"{}\" vectornator:layerName=\"{}\" inkscape:groupmode=\"layer\" inkscape:label=\"{}\">\n".format(layer_name+"_BeauL", layer_name, layer_name)
             for going_curve, returning_curve in zip(going_curves, returning_curves):
                 s += "<path fill=\"" + color + "\" stroke=\"none\" d=\""
                 is_first = True
                 for ctrl_p in going_curve.control_points:
                     if is_first:
-                        s += "M {:.3f} {:.3f} ".format(ctrl_p.p0.x + shift, ctrl_p.p0.y)
-                        s += "C {:.3f} {:.3f} ".format(ctrl_p.p1.x + shift, ctrl_p.p1.y)
-                        s += " {:.3f} {:.3f} ".format(ctrl_p.p2.x + shift, ctrl_p.p2.y)
-                        s += " {:.3f} {:.3f} ".format(ctrl_p.p3.x + shift, ctrl_p.p3.y)
+                        s += "M {:.3f} {:.3f} ".format( float(ctrl_p.p0.x + shift), float(ctrl_p.p0.y) )
+                        s += "C {:.3f} {:.3f} ".format( float(ctrl_p.p1.x + shift), float(ctrl_p.p1.y) )
+                        s += " {:.3f} {:.3f} ".format(  float(ctrl_p.p2.x + shift), float(ctrl_p.p2.y) )
+                        s += " {:.3f} {:.3f} ".format(  float(ctrl_p.p3.x + shift), float(ctrl_p.p3.y) )
                         is_first = False
                     else:
-                        s += "C {:.3f} {:.3f} ".format(ctrl_p.p1.x + shift, ctrl_p.p1.y)
-                        s += " {:.3f} {:.3f} ".format(ctrl_p.p2.x + shift, ctrl_p.p2.y)
-                        s += " {:.3f} {:.3f} ".format(ctrl_p.p3.x + shift, ctrl_p.p3.y)
+                        s += "C {:.3f} {:.3f} ".format( float(ctrl_p.p1.x + shift), float(ctrl_p.p1.y) )
+                        s += " {:.3f} {:.3f} ".format(  float(ctrl_p.p2.x + shift), float(ctrl_p.p2.y) )
+                        s += " {:.3f} {:.3f} ".format(  float(ctrl_p.p3.x + shift), float(ctrl_p.p3.y) )
                     #end for
                 #end for
                 for ctrl_p in returning_curve.control_points:
@@ -304,7 +304,7 @@ class AllLayerCubicBezierCurveSet(AllLayerCurveSet):
         s = ""
         #for group_id, curves in zip(self.__group_ids, self.__layered_curves):
         for layer_name, curve_set in zip(self.__layer_names, self.__curve_set):
-            s += "<g id=\"{}\" vectornator:layerName=\"{}\" inkscape:groupmode=\"layer\" inkscape:label=\"{}\"\n".format(layer_name, layer_name, layer_name)
+            s += "<g id=\"{}\" vectornator:layerName=\"{}\" inkscape:groupmode=\"layer\" inkscape:label=\"{}\">\n".format(layer_name+"_BeauL", layer_name, layer_name)
             for curve in curve_set:
                 s += "<path fill=\"none\" stroke=\"" + color + "\" d=\""
                 is_first = True

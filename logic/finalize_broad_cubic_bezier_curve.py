@@ -11,11 +11,11 @@ from cubic_bezier_control_point import CubicBezierControlPoint
 from curve import CubicBezierCurve
 from curve_set_in_a_layer import CurveSetInALayer
 from all_layer_curve_set import AllLayerBroadCubicBezierCurveSet
+from all_layer_curve_set import AllLayerCubicBezierCurveSet
 
 from sympy.geometry import *
 
 def isSimple(curve):
-    # reference of curve angle calculated by first 2 points
     x = []
     y = []
     for p in curve:
@@ -24,9 +24,11 @@ def isSimple(curve):
     #end for
     xs = np.array(x)
     ys = np.array(y)
-    f_prime = np.gradient(ys)
-    indices = np.where(np.diff(np.sign(f_prime)))[0]
-    if len(indices) <= 1:
+    x_prime = np.gradient(xs)
+    y_prime = np.gradient(ys)
+    x_indices = np.where(np.diff(np.sign(x_prime)))[0]
+    y_indices = np.where(np.diff(np.sign(y_prime)))[0]
+    if len(y_indices) <= 1 and len(x_indices) <= 1:
         return True
     else:
         return False
@@ -47,17 +49,21 @@ def getBezierParameters(curve):
     and probably on the 1998 thesis by Tim Andrew Pastva, "Bezier Curve Fitting".
     """
     degree = 3 # only cubic bezier curve
+    the_end = len(curve) if (curve.end_index >= len(curve) or curve.end_index == -1 ) else curve.end_index
 
     x = []
     y = []
-    for i in range( curve.start_index, curve.end_index ):
+    for i in range( curve.start_index, the_end ):
         point = curve[i]
         x.append( float( point.x ) )
         y.append( float( point.y ) )
     #end for
 
+    if len(x)==0:
+        return CubicBezierControlPoint(Point(0.0, 0.0, evaluate=False), Point(1.0, 1.0, evaluate=False), Point(2.0, 2.0, evaluate=False), Point(3.0, 3.0, evaluate=False))
+    #end if
     if len(x)==1:
-        point = curve[ curve.end_index]
+        point = curve[ curve.end_index - 1 ]
         x.append( float( point.x ) )
         y.append( float( point.y ) )
     #end if
@@ -95,15 +101,23 @@ def getBezierParameters(curve):
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # for complex case
 def getComplexCurveCubicBezierPoints(curve):
+    the_end = len(curve) if (curve.end_index >= len(curve) or curve.end_index == -1 ) else curve.end_index
+
     x = []
     y = []
-    for i in range( curve.start_index, curve.end_index ):
+    for i in range( curve.start_index, the_end ):
         point = curve[i]
         x.append( float( point.x ) )
         y.append( float( point.y ) )
     #end for
     xx = np.array(x)
     yy = np.array(y)
+
+    if len(xx) <= 3:
+        ctrl_p = getBezierParameters(curve)
+        return [  [ [ctrl_p.p0.x, ctrl_p.p0.y], [ctrl_p.p1.x, ctrl_p.p1.y], [ctrl_p.p2.x, ctrl_p.p2.y], [ctrl_p.p3.x, ctrl_p.p3.y] ]  ]
+    #end if
+
 
     tck,u = interpolate.splprep([xx,yy],s=2.0)
     unew = np.arange(0,1.01,0.01)
@@ -202,7 +216,50 @@ def finalizeBroadCubicBezierCurve(broad_curve):
             curve_index += 1
         #end for
 
-        all_final_curve_set.append( layer_name, final_going_curve_set, final_returning_curve_set)
+        all_final_curve_set.append( "B" + layer_name, final_going_curve_set, final_returning_curve_set)
+        layer_index += 1
+    #end for
+    print("simple {}\ntotal {}".format(simple_curve_num, total_curve_num))
+    return all_final_curve_set
+#end
+
+def finalizeSingleCubicBezierCurve(single_curve):
+    all_final_curve_set = AllLayerCubicBezierCurveSet()
+
+    total_layer_num = len(single_curve)
+    layer_index = 0
+    simple_curve_num = 0
+    total_curve_num = 0
+    for layer_name, curve_set in single_curve:
+        total_curve_num_in_a_layer = len(curve_set)
+        curve_index = 0
+
+        final_curve_set = CurveSetInALayer()
+        for curve in curve_set:
+            print("finalize {}/{} in {} {}/{}".format(curve_index+1, total_curve_num_in_a_layer, layer_name, layer_index+1, total_layer_num))
+
+            if isSimple(curve):
+                final_going_curve = CubicBezierCurve()
+                final_going_curve.append( getBezierParameters(curve) )
+                final_curve_set.append( final_going_curve )
+                simple_curve_num += 1
+            else:
+                final_going_curve = CubicBezierCurve()
+                control_points = getComplexCurveCubicBezierPoints(curve)
+                for ctrl_p in control_points:
+                    final_going_curve.append(  CubicBezierControlPoint( Point(ctrl_p[0][0], ctrl_p[0][1], evaluate=False), 
+                                                                        Point(ctrl_p[1][0], ctrl_p[1][1], evaluate=False), 
+                                                                        Point(ctrl_p[2][0], ctrl_p[2][1], evaluate=False), 
+                                                                        Point(ctrl_p[3][0], ctrl_p[3][1], evaluate=False)  )   )
+                #end for
+                final_curve_set.append( final_going_curve )
+
+            #end if
+            total_curve_num += 1
+            curve_index += 1
+        #end for
+
+        all_final_curve_set.append( "C" + layer_name, final_curve_set)
         layer_index += 1
     #end for
     print("simple {}\ntotal {}".format(simple_curve_num, total_curve_num))
