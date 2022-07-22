@@ -20,7 +20,7 @@ def writeSvg(original_file_name, all_layer_curve_set):
 
     whole_text = open(original_file_name, 'r').read()
 
-    s += whole_text.replace("xmlns:vectornator=", "xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\" xmlns:vectornator=").replace("</svg>", all_layer_curve_set.to_svg_str(color="#ff0000", shift=0.0))
+    s += whole_text.replace("xmlns:vectornator=", "xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\" xmlns:vectornator=").replace("</svg>", all_layer_curve_set.to_svg_str(color="#00ff00", shift=0.0))
     s += "</svg>"
     with open(original_file_name.replace(".svg", "_BeauL.svg"), "w") as output:
         output.write(s) 

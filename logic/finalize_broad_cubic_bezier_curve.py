@@ -77,7 +77,7 @@ def getBezierParameters(curve):
     #end if
     xdata = np.array(x)
     ydata = np.array(y)
-    
+
     def bpoly(n, t, k):
         """ Bernstein polynomial when a = 0 and b = 1. """
         return t ** k * (1 - t) ** (n - k) * comb(n, k)
@@ -95,7 +95,12 @@ def getBezierParameters(curve):
     points = np.array(list(zip(xdata, ydata)))
 
     fit = least_square_fit(points, M).tolist()
-    return CubicBezierControlPoint(Point(fit[0][0], fit[0][1], evaluate=False), Point(fit[1][0], fit[1][1], evaluate=False), Point(fit[2][0], fit[2][1], evaluate=False), Point(fit[3][0], fit[3][1], evaluate=False))
+
+    first_point = Point(x[0], y[0], evaluate=False)
+    last_point = Point(x[-1], y[-1], evaluate=False)
+    
+    #return CubicBezierControlPoint(Point(fit[0][0], fit[0][1], evaluate=False), Point(fit[1][0], fit[1][1], evaluate=False), Point(fit[2][0], fit[2][1], evaluate=False), Point(fit[3][0], fit[3][1], evaluate=False))
+    return CubicBezierControlPoint(first_point, Point(fit[1][0], fit[1][1], evaluate=False), Point(fit[2][0], fit[2][1], evaluate=False), last_point)
 #end
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
